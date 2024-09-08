@@ -7,6 +7,18 @@ const CommandList: BotCommand[] = [
     description: "Start the bot",
   },
   {
+    command: COMMANDS.LIST,
+    description: "Get current bookmarked list",
+  },
+  {
+    command: COMMANDS.ADD,
+    description: "Bookmark a manga",
+  },
+  {
+    command: COMMANDS.REMOVE,
+    description: "Remove a bookmarked manga",
+  },
+  {
     command: COMMANDS.HELP,
     description: "View the list of help commands",
   },
