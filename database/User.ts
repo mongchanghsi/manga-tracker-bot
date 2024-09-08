@@ -27,7 +27,7 @@ class UserDB {
         .from(TABLE_NAME.USER)
         .select("*")
         .eq("telegramId", userId);
-      console.log({
+      console.log("Get User", {
         data,
         error,
       });
