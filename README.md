@@ -2,7 +2,7 @@
 
 ## Problem
 
-As a manga-reader myself, I often faced with issue of not sure when will the manga be released and sometimes I would read manga that are not listed on platforms such as MangaDEX, and also often manga that are listed on MangaDEX, does not have english translation. Hence I will have to turn to individual sites specifically for the manga. Hence the list is quite long over time, and I will tend to lose the URL that I am tracking. This bots aims to consistently track whether are there latest releases by calling a GET call onto the registered URL and checks whether is it available, and sends a notification to the users that which manga is available through a daily cron job checking.
+As a manga reader, I often struggle with knowing when new chapters will be released. Sometimes I read manga that aren't listed on platforms like MangaDEX, or those that are listed lack English translations. As a result, I rely on individual sites for specific manga, causing the list of URLs to grow over time, and I often lose track of them. This bot aims to consistently monitor the registered URLs for new releases by making GET requests and notifying users when a new chapter is available, using a daily cron job to check for updates.
 
 ## References
 
