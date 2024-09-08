@@ -31,7 +31,7 @@ export const GetBookmarksCommand = async (
   const bookmarks = await listDb.getBookmarks(userId);
 
   if (bookmarks.length > 0) {
-    await ctx.reply(getResponseStringBookmark(bookmarks), {
+    await ctx.replyWithHTML(getResponseStringBookmark(bookmarks), {
       reply_markup: {
         inline_keyboard: [
           [
@@ -39,6 +39,9 @@ export const GetBookmarksCommand = async (
             { text: "Remove ❌", callback_data: COMMANDS.REMOVE },
           ],
         ],
+      },
+      link_preview_options: {
+        is_disabled: true,
       },
     });
   } else {
@@ -68,6 +71,9 @@ export const GetBookmarksAction = async (
             { text: "Remove ❌", callback_data: COMMANDS.REMOVE },
           ],
         ],
+      },
+      link_preview_options: {
+        is_disabled: true,
       },
     });
   } else {
