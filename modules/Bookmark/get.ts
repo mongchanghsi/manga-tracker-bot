@@ -6,6 +6,16 @@ import { COMMANDS } from "../../utils/command";
 import userDb from "../../database/User";
 import listDb from "../../database/List";
 
+const getResponseStringBookmark = (bookmarks: any[]) => {
+  const _list = bookmarks
+    .map(
+      (bookmark) =>
+        `${bookmark.id}. ${bookmark.name} - Chapter ${bookmark.latestChapter} - ${bookmark.url}`
+    )
+    .join(`\n`);
+  return `Here's is the list\n\n${_list}`;
+};
+
 export const GetBookmarksCommand = async (
   ctx: NarrowedContext<Context, MountMap["text"]>
 ) => {
@@ -20,8 +30,8 @@ export const GetBookmarksCommand = async (
 
   const bookmarks = await listDb.getBookmarks(userId);
 
-  if (bookmarks && bookmarks.length > 0) {
-    await ctx.reply(`Here's is the list`, {
+  if (bookmarks.length > 0) {
+    await ctx.reply(getResponseStringBookmark(bookmarks), {
       reply_markup: {
         inline_keyboard: [
           [
@@ -50,7 +60,7 @@ export const GetBookmarksAction = async (
   const bookmarks = await listDb.getBookmarks(userId);
 
   if (bookmarks && bookmarks.length > 0) {
-    await ctx.editMessageText(`Here's is the list`, {
+    await ctx.editMessageText(getResponseStringBookmark(bookmarks), {
       reply_markup: {
         inline_keyboard: [
           [

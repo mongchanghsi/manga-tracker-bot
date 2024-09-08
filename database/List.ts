@@ -33,7 +33,6 @@ class ListDB {
   }
 
   async getBookmarks(userId: number) {
-    console.log(userId);
     try {
       const { data, error } = await this.client
         .from(TABLE_NAME.LIST)
@@ -43,7 +42,15 @@ class ListDB {
         data,
         error,
       });
-      return data;
+      if (data && data.length > 0) {
+        return data.map((_data) => {
+          return {
+            ..._data,
+            url: _data.url.replace(CHAPTER_PLACEHOLDER, _data.latestChapter),
+          };
+        });
+      }
+      return [];
     } catch (error) {
       console.log("Error", error);
       return [];

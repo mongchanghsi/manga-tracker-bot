@@ -17,3 +17,6 @@ export const getUserId = (
 export const getUserIdFromCallback = (
   ctx: NarrowedContext<Context<Update>, Types.MountMap["callback_query"]>
 ): number => ctx.update.callback_query.from.id ?? 0;
+export const getMessage = (
+  ctx: NarrowedContext<Context, MountMap["text"]>
+): string => ctx.update.message.text;
