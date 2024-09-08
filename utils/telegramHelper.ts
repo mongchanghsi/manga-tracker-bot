@@ -10,3 +10,6 @@ export const getUsername = (
 export const getFirstName = (
   ctx: NarrowedContext<Context, MountMap["text"]>
 ): string => ctx.update.message.from.first_name ?? "";
+export const getUserId = (
+  ctx: NarrowedContext<Context, MountMap["text"]>
+): number => ctx.update.message.from.id ?? 0;
