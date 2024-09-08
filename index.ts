@@ -22,8 +22,10 @@ import {
   RemoveBookmarksCommand,
   RemoveBookmarksFollowup,
 } from "./modules/Bookmark/delete";
+import { CronJob } from "cron";
+import ScheduleUpdateBookmarks from "./modules/Scheduler";
 
-interface MyContext<U extends Update = Update> extends Context<U> {
+export interface MyContext<U extends Update = Update> extends Context<U> {
   session: {
     command: COMMANDS;
     add: ADD_SESSION;
@@ -43,14 +45,18 @@ bot.use(
 
 bot.start(StartCommand);
 bot.command(COMMANDS.START, StartCommand);
+
 bot.command(COMMANDS.LIST, GetBookmarksCommand);
 bot.action(COMMANDS.LIST, GetBookmarksAction);
+
 bot.command(COMMANDS.ADD, AddBookmarksCommand);
 bot.action(COMMANDS.ADD, AddBookmarksAction);
+
 bot.command(COMMANDS.REMOVE, RemoveBookmarksCommand);
 bot.action(COMMANDS.REMOVE, RemoveBookmarksAction);
+
 bot.command(COMMANDS.HELP, HelpCommand);
-bot.action("help", HelpAction);
+bot.action(COMMANDS.HELP, HelpAction);
 
 bot.on("text", (ctx) => {
   if (ctx.session.command === COMMANDS.ADD) {
@@ -63,3 +69,15 @@ bot.on("text", (ctx) => {
 
 bot.telegram.setMyCommands(CommandList);
 bot.launch();
+
+const SCHEDUELD_TIME = "00 00 00 * * *"; // Every day at 12am;
+const job = new CronJob(
+  SCHEDUELD_TIME, // cronTime
+  () => ScheduleUpdateBookmarks(bot),
+  null,
+  true,
+  null,
+  null,
+  null,
+  +480 // UTC+8, represented in minutes
+);

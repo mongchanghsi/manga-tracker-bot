@@ -7,3 +7,4 @@ As a manga reader, I often struggle with knowing when new chapters will be relea
 ## References
 
 Telegraf Sessions - https://github.com/feathers-studio/telegraf-docs/blob/b694bcc36b4f71fb1cd650a345c2009ab4d2a2a5/guide/session.md
+Cron job - https://github.com/kelektiv/node-cron/tree/main

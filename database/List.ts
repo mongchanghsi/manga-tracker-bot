@@ -85,6 +85,20 @@ class ListDB {
       return false;
     }
   }
+
+  async updateBookmark(bookmarkId: number, chapter: number) {
+    try {
+      const { error } = await this.client
+        .from(TABLE_NAME.LIST)
+        .update({ latestChapter: chapter })
+        .eq("id", bookmarkId);
+      if (error) return false;
+      return true;
+    } catch (error) {
+      console.log("Update Bookmark Error - ", error);
+      return false;
+    }
+  }
 }
 
 const listDb = new ListDB();

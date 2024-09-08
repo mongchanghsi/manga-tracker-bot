@@ -39,6 +39,19 @@ class UserDB {
       return null;
     }
   }
+
+  async getAllUser() {
+    try {
+      const { data, error } = await this.client
+        .from(TABLE_NAME.USER)
+        .select("*");
+      if (data && data.length > 0) return data;
+      return [];
+    } catch (error) {
+      console.log("Error", error);
+      return [];
+    }
+  }
 }
 
 const userDb = new UserDB();
