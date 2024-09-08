@@ -11,6 +11,21 @@ class ListDB {
     this.client = getSupabaseClient;
   }
 
+  async getBookmark(userId: number, bookmarkId: number) {
+    try {
+      const { data, error } = await this.client
+        .from(TABLE_NAME.LIST)
+        .select("*")
+        .eq("telegramId", userId)
+        .eq("id", bookmarkId);
+      if (data && data.length > 0) return data[0];
+      return null;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   async addBookmark(
     userId: number,
     name: string,
@@ -57,7 +72,19 @@ class ListDB {
     }
   }
 
-  async removeBookmark(userId: number, bookmarkId: number) {}
+  async removeBookmark(userId: number, bookmarkId: number) {
+    try {
+      const { error } = await this.client
+        .from(TABLE_NAME.LIST)
+        .delete()
+        .eq("telegramId", userId)
+        .eq("id", bookmarkId);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
 }
 
 const listDb = new ListDB();

@@ -17,6 +17,11 @@ import {
 } from "./modules/Bookmark/add";
 
 import type { Update } from "telegraf/types";
+import {
+  RemoveBookmarksAction,
+  RemoveBookmarksCommand,
+  RemoveBookmarksFollowup,
+} from "./modules/Bookmark/delete";
 
 interface MyContext<U extends Update = Update> extends Context<U> {
   session: {
@@ -42,12 +47,17 @@ bot.command(COMMANDS.LIST, GetBookmarksCommand);
 bot.action(COMMANDS.LIST, GetBookmarksAction);
 bot.command(COMMANDS.ADD, AddBookmarksCommand);
 bot.action(COMMANDS.ADD, AddBookmarksAction);
+bot.command(COMMANDS.REMOVE, RemoveBookmarksCommand);
+bot.action(COMMANDS.REMOVE, RemoveBookmarksAction);
 bot.command(COMMANDS.HELP, HelpCommand);
 bot.action("help", HelpAction);
 
 bot.on("text", (ctx) => {
   if (ctx.session.command === COMMANDS.ADD) {
     AddBookmarksFollowup(ctx);
+  }
+  if (ctx.session.command === COMMANDS.REMOVE) {
+    RemoveBookmarksFollowup(ctx);
   }
 });
 
