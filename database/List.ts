@@ -1,4 +1,4 @@
-import { SupabaseClient, createClient } from "@supabase/supabase-js";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { TABLE_NAME } from "./table_name";
 import getSupabaseClient from "./client";
 

@@ -2,9 +2,14 @@ import { getMessage, getUserId } from "../../utils/telegramHelper";
 import userDb from "../../database/User";
 import { COMMANDS } from "../../utils/command";
 import listDb from "../../database/List";
+import { MountMap } from "telegraf/typings/telegram-types";
+import { NarrowedContext, Types } from "telegraf";
+import { BookmarkSessionContext } from "./session";
+import { Update } from "telegraf/types";
 
-// TODO Fix ctx typing to include sessions
-export const RemoveBookmarksCommand = async (ctx: any) => {
+export const RemoveBookmarksCommand = async (
+  ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
+) => {
   const userId = getUserId(ctx as any);
 
   const user = await userDb.getUser(userId);
@@ -18,7 +23,12 @@ export const RemoveBookmarksCommand = async (ctx: any) => {
   await ctx.reply("Please provide the ID of the manga that you want to remove");
 };
 
-export const RemoveBookmarksAction = async (ctx: any) => {
+export const RemoveBookmarksAction = async (
+  ctx: NarrowedContext<
+    BookmarkSessionContext<Update>,
+    Types.MountMap["callback_query"]
+  >
+) => {
   ctx.session.command = COMMANDS.REMOVE;
   await ctx.reply("Please provide the ID of the manga that you want to remove");
   ctx.answerCbQuery();

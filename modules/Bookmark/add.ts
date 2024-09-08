@@ -1,37 +1,15 @@
 import { NarrowedContext, Context, Types } from "telegraf";
 import { MountMap } from "telegraf/typings/telegram-types";
-import {
-  getMessage,
-  getUserId,
-  getUserIdFromCallback,
-} from "../../utils/telegramHelper";
-import { Update } from "telegraf/typings/core/types/typegram";
+import { getMessage, getUserId } from "../../utils/telegramHelper";
 import userDb from "../../database/User";
 import { COMMANDS } from "../../utils/command";
 import listDb from "../../database/List";
+import { BookmarkSessionContext, DEFAULT_ADD_SESSION, STEP } from "./session";
+import { Update } from "telegraf/types";
 
-export type ADD_SESSION = {
-  step: string;
-  name: string;
-  url: string;
-  latestChapter: number;
-};
-
-export enum STEP {
-  NAME = "name",
-  URL = "url",
-  CHAPTER = "chapter",
-}
-
-export const DEFAULT_ADD_SESSION = {
-  step: STEP.NAME,
-  name: "",
-  url: "",
-  latestChapter: 0,
-};
-
-// TODO Fix ctx typing to include sessions
-export const AddBookmarksCommand = async (ctx: any) => {
+export const AddBookmarksCommand = async (
+  ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
+) => {
   const userId = getUserId(ctx as any);
 
   const user = await userDb.getUser(userId);
@@ -46,7 +24,12 @@ export const AddBookmarksCommand = async (ctx: any) => {
   await ctx.reply("What is the name?");
 };
 
-export const AddBookmarksAction = async (ctx: any) => {
+export const AddBookmarksAction = async (
+  ctx: NarrowedContext<
+    BookmarkSessionContext<Update>,
+    Types.MountMap["callback_query"]
+  >
+) => {
   ctx.session.command = COMMANDS.ADD;
   ctx.session.add.step = STEP.NAME;
   await ctx.reply("What is the name?");

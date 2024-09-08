@@ -9,30 +9,22 @@ import {
   GetBookmarksCommand,
 } from "./modules/Bookmark/get";
 import {
-  ADD_SESSION,
   AddBookmarksAction,
   AddBookmarksCommand,
   AddBookmarksFollowup,
-  DEFAULT_ADD_SESSION,
 } from "./modules/Bookmark/add";
-
-import type { Update } from "telegraf/types";
 import {
   RemoveBookmarksAction,
   RemoveBookmarksCommand,
   RemoveBookmarksFollowup,
 } from "./modules/Bookmark/delete";
-import { CronJob } from "cron";
-import ScheduleUpdateBookmarks from "./modules/Scheduler";
+import {
+  DEFAULT_ADD_SESSION,
+  BookmarkSessionContext,
+} from "./modules/Bookmark/session";
+import { initCronJob } from "./modules/Scheduler";
 
-export interface MyContext<U extends Update = Update> extends Context<U> {
-  session: {
-    command: COMMANDS;
-    add: ADD_SESSION;
-  };
-}
-
-const bot = new Telegraf<MyContext>(ENVIRONMENT.BOT_TOKEN);
+const bot = new Telegraf<BookmarkSessionContext>(ENVIRONMENT.BOT_TOKEN);
 
 bot.use(
   session({
@@ -69,15 +61,4 @@ bot.on("text", (ctx) => {
 
 bot.telegram.setMyCommands(CommandList);
 bot.launch();
-
-const SCHEDUELD_TIME = "00 00 00 * * *"; // Every day at 12am;
-const job = new CronJob(
-  SCHEDUELD_TIME, // cronTime
-  () => ScheduleUpdateBookmarks(bot),
-  null,
-  true,
-  null,
-  null,
-  null,
-  +480 // UTC+8, represented in minutes
-);
+initCronJob(bot);

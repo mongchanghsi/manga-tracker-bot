@@ -2,7 +2,10 @@ import { Telegraf } from "telegraf";
 import { Update } from "telegraf/types";
 import userDb from "../../database/User";
 import listDb from "../../database/List";
-import { MyContext } from "../..";
+import { BookmarkSessionContext } from "../Bookmark/session";
+import { CronJob } from "cron";
+
+const SCHEDUELD_TIME = "00 00 00 * * *"; // Every day at 12am;
 
 const checkIfUrlExist = async (url: string) => {
   try {
@@ -18,7 +21,9 @@ const checkIfUrlExist = async (url: string) => {
   }
 };
 
-const ScheduleUpdateBookmarks = async (bot: Telegraf<MyContext<Update>>) => {
+const ScheduleUpdateBookmarks = async (
+  bot: Telegraf<BookmarkSessionContext<Update>>
+) => {
   const users = await userDb.getAllUser();
   users.forEach(async (_user) => {
     const bookmarks = await listDb.getBookmarks(_user.telegramId);
@@ -53,4 +58,15 @@ const ScheduleUpdateBookmarks = async (bot: Telegraf<MyContext<Update>>) => {
   });
 };
 
-export default ScheduleUpdateBookmarks;
+export const initCronJob = (bot: Telegraf<BookmarkSessionContext<Update>>) => {
+  new CronJob(
+    SCHEDUELD_TIME, // cronTime
+    () => ScheduleUpdateBookmarks(bot),
+    null,
+    true,
+    null,
+    null,
+    null,
+    +480 // UTC+8, represented in minutes
+  );
+};
