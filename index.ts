@@ -64,7 +64,7 @@ bot.on("text", (ctx) => {
 
 bot.telegram.setMyCommands(CommandList);
 
-const PORT = 3000;
+const PORT = 8000;
 const WEBHOOK_DOMAIN = ENVIRONMENT.WEBHOOK_DOMAIN;
 bot
   .launch({ webhook: { domain: WEBHOOK_DOMAIN, port: PORT } })
@@ -76,5 +76,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`App running at ${WEBHOOK_DOMAIN}/${PORT}`);
+  console.log(`App running at ${WEBHOOK_DOMAIN}/${PORT + 1}`);
 });
