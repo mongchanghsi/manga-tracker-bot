@@ -75,6 +75,6 @@ app.get("/", (req, res) => {
   res.send("Bot is healthy!");
 });
 
-app.listen(PORT, () => {
+app.listen(PORT + 1, () => {
   console.log(`App running at ${WEBHOOK_DOMAIN}/${PORT + 1}`);
 });
