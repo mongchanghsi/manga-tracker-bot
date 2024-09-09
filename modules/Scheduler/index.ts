@@ -13,7 +13,10 @@ const checkIfUrlExist = async (url: string) => {
     if (response.status === 404) return false;
 
     const data = await response.text();
-    if (!data.includes(`Manga Info`)) return false;
+    if (data.toLowerCase().includes("not found")) return false;
+    if (data.toLowerCase().includes("Oops! That page can’t be found"))
+      return false;
+    if (!data.toLowerCase().includes(`Manga Info`)) return false;
 
     return true;
   } catch (error) {
