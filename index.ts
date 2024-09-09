@@ -74,3 +74,7 @@ initCronJob(bot);
 app.get("/", (req, res) => {
   res.send("Bot is healthy!");
 });
+
+app.listen(PORT, () => {
+  console.log(`App running at ${WEBHOOK_DOMAIN}/${PORT}`);
+});
