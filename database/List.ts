@@ -21,7 +21,7 @@ class ListDB {
       if (data && data.length > 0) return data[0];
       return null;
     } catch (error) {
-      console.log(error);
+      console.log("getBookmark | Error - ", error);
       return null;
     }
   }
@@ -40,10 +40,11 @@ class ListDB {
         url: processedUrl,
         latestChapter: +latestChapter,
       });
-      console.log(error);
       if (!error) return true;
+      return false;
     } catch (error) {
-      console.log(error);
+      console.log("addBookmark | Error - ", error);
+      return false;
     }
   }
 
@@ -53,10 +54,6 @@ class ListDB {
         .from(TABLE_NAME.LIST)
         .select("*")
         .eq("telegramId", userId);
-      console.log("Get Bookmarks", {
-        data,
-        error,
-      });
       if (data && data.length > 0) {
         return data.map((_data) => {
           return {
@@ -67,7 +64,7 @@ class ListDB {
       }
       return [];
     } catch (error) {
-      console.log("Error", error);
+      console.log("getBookmarks | Error - ", error);
       return [];
     }
   }
@@ -81,7 +78,7 @@ class ListDB {
         .eq("id", bookmarkId);
       return true;
     } catch (error) {
-      console.log(error);
+      console.log("removeBookmark | Error - ", error);
       return false;
     }
   }
@@ -95,7 +92,7 @@ class ListDB {
       if (error) return false;
       return true;
     } catch (error) {
-      console.log("Update Bookmark Error - ", error);
+      console.log("updateBookmark | Error - ", error);
       return false;
     }
   }

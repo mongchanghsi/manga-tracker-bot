@@ -14,10 +14,11 @@ class UserDB {
       const { error } = await this.client
         .from(TABLE_NAME.USER)
         .insert({ telegramId: userId });
-      console.log(error);
       if (!error) return true;
+      return false;
     } catch (error) {
-      console.log(error);
+      console.log("createUser | Error - ", error);
+      return false;
     }
   }
 
@@ -27,15 +28,10 @@ class UserDB {
         .from(TABLE_NAME.USER)
         .select("*")
         .eq("telegramId", userId);
-      console.log("Get User", {
-        data,
-        error,
-      });
-
       if (data && Array(data)) return data[0];
       return null;
     } catch (error) {
-      console.log("Error", error);
+      console.log("getUser | Error - ", error);
       return null;
     }
   }
@@ -48,7 +44,7 @@ class UserDB {
       if (data && data.length > 0) return data;
       return [];
     } catch (error) {
-      console.log("Error", error);
+      console.log("getAllUser | Error - ", error);
       return [];
     }
   }
