@@ -24,6 +24,7 @@ import {
 } from "./modules/Bookmark/session";
 import { initCronJob } from "./modules/Scheduler";
 import express from "express";
+import { initStayAlive } from "./modules/Scheduler/stayAlive";
 
 const app = express();
 
@@ -70,6 +71,7 @@ bot
   .launch({ webhook: { domain: WEBHOOK_DOMAIN, port: PORT } })
   .then(() => console.log("Webhook bot listening on port", PORT));
 initCronJob(bot);
+initStayAlive();
 
 app.get("/", (req, res) => {
   res.send("Bot is healthy!");
