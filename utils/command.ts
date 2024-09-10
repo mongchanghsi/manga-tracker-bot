@@ -6,4 +6,5 @@ export enum COMMANDS {
   ADD = "add",
   REMOVE = "remove",
   FEEDBACK = "feedback",
+  REFRESH = "refresh",
 }

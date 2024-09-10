@@ -38,6 +38,7 @@ export const GetBookmarksCommand = async (
             { text: "Add ➕", callback_data: COMMANDS.ADD },
             { text: "Remove ❌", callback_data: COMMANDS.REMOVE },
           ],
+          [{ text: "Refresh 🔄", callback_data: COMMANDS.REFRESH }],
         ],
       },
       link_preview_options: {
@@ -70,6 +71,7 @@ export const GetBookmarksAction = async (
             { text: "Add ➕", callback_data: COMMANDS.ADD },
             { text: "Remove ❌", callback_data: COMMANDS.REMOVE },
           ],
+          [{ text: "Refresh 🔄", callback_data: COMMANDS.REFRESH }],
         ],
       },
       link_preview_options: {

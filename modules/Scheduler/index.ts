@@ -4,26 +4,9 @@ import userDb from "../../database/User";
 import listDb from "../../database/List";
 import { BookmarkSessionContext } from "../Bookmark/session";
 import { CronJob } from "cron";
+import { checkIfUrlExist } from "../../utils/checker";
 
 const SCHEDUELD_TIME = "00 00 00 * * *"; // Every day at 12am;
-
-const checkIfUrlExist = async (url: string) => {
-  try {
-    const response = await fetch(url);
-    if (response.status === 404) return false;
-
-    const data = await response.text();
-    if (data.toLowerCase().includes("not found")) return false;
-    if (data.toLowerCase().includes("Oops! That page can’t be found"))
-      return false;
-    if (data.toLowerCase().includes("not available")) return false;
-    if (!data.toLowerCase().includes(`Manga Info`)) return false;
-
-    return true;
-  } catch (error) {
-    console.log("Checking Url Error", error);
-  }
-};
 
 const ScheduleUpdateBookmarks = async (
   bot: Telegraf<BookmarkSessionContext<Update>>
