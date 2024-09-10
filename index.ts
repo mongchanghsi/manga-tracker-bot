@@ -25,6 +25,7 @@ import {
 import { initCronJob } from "./modules/Scheduler";
 import express from "express";
 import { initStayAlive } from "./modules/Scheduler/stayAlive";
+import { RefreshBookmarksAction } from "./modules/Bookmark/refresh";
 
 const app = express();
 
@@ -51,6 +52,8 @@ bot.action(COMMANDS.ADD, AddBookmarksAction);
 bot.command(COMMANDS.REMOVE, RemoveBookmarksCommand);
 bot.action(COMMANDS.REMOVE, RemoveBookmarksAction);
 
+bot.action(COMMANDS.REFRESH, RefreshBookmarksAction);
+
 bot.command(COMMANDS.HELP, HelpCommand);
 bot.action(COMMANDS.HELP, HelpAction);
 
@@ -67,11 +70,19 @@ bot.telegram.setMyCommands(CommandList);
 
 const PORT = 3000;
 const WEBHOOK_DOMAIN = ENVIRONMENT.WEBHOOK_DOMAIN;
-bot
-  .launch({ webhook: { domain: WEBHOOK_DOMAIN, port: PORT } })
-  .then(() => console.log("Webhook bot listening on port", PORT));
-initCronJob(bot);
-initStayAlive();
+
+const args = process.argv;
+
+if (args[args.length - 1] === "--local") {
+  bot.launch();
+  console.log("Bot started locally");
+} else {
+  bot
+    .launch({ webhook: { domain: WEBHOOK_DOMAIN, port: PORT } })
+    .then(() => console.log("Webhook bot listening on port", PORT));
+  initCronJob(bot);
+  initStayAlive();
+}
 
 app.get("/", (req, res) => {
   res.send("Bot is healthy!");
