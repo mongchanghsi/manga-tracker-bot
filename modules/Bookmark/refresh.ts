@@ -34,7 +34,7 @@ export const RefreshBookmarksAction = async (
       chapterToLookFor
     );
     console.log(`Checking ${url}`);
-    const hasNextChapter = await checkIfUrlExist(url);
+    const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
     console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
 
     if (hasNextChapter) {

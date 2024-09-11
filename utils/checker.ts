@@ -1,13 +1,14 @@
-export const checkIfUrlExist = async (url: string) => {
+export const checkIfUrlExist = async (url: string, chapter: number) => {
   try {
     const response = await fetch(url);
     if (response.status === 404) return false;
 
     const data = await response.text();
-    if (data.toLowerCase().includes("not found")) return false;
-    if (data.toLowerCase().includes("Oops! That page can’t be found"))
-      return false;
-    if (data.toLowerCase().includes("not available")) return false;
+    const _data = data.toLowerCase();
+    if (_data.includes("not found")) return false;
+    if (_data.includes("Oops! That page can’t be found")) return false;
+    if (_data.includes("not available")) return false;
+    if (!_data.includes(`chapter ${chapter}`)) return false;
 
     return true;
   } catch (error) {
