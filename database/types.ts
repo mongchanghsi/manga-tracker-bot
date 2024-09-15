@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      feedback: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          id: number;
+          resolved: boolean | null;
+          telegramId: number | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          resolved?: boolean | null;
+          telegramId?: number | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          resolved?: boolean | null;
+          telegramId?: number | null;
+        };
+        Relationships: [];
+      };
       list: {
         Row: {
           created_at: string;
