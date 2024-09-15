@@ -16,6 +16,7 @@ class FeedbackDB {
         content,
         resovled: false,
       });
+      console.log("addFeedback | Supabase | Error - ", error);
       if (!error) return true;
       return false;
     } catch (error) {
