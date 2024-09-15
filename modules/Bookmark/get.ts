@@ -5,6 +5,7 @@ import { Update } from "telegraf/typings/core/types/typegram";
 import { COMMANDS } from "../../utils/command";
 import userDb from "../../database/User";
 import listDb from "../../database/List";
+import { BOOKMARK_NONE, NOT_REGISTERED } from "../../utils/messages";
 
 const getResponseStringBookmark = (bookmarks: any[]) => {
   const _list = bookmarks
@@ -23,9 +24,7 @@ export const GetBookmarksCommand = async (
 
   const user = await userDb.getUser(userId);
   if (!user) {
-    await ctx.reply(
-      "Oh no, you're not registered yet. Type /start to continue"
-    );
+    await ctx.reply(NOT_REGISTERED);
   }
 
   const bookmarks = await listDb.getBookmarks(userId);
@@ -46,14 +45,11 @@ export const GetBookmarksCommand = async (
       },
     });
   } else {
-    await ctx.reply(
-      `You don't have any bookmarked manga! Add one to get started`,
-      {
-        reply_markup: {
-          inline_keyboard: [[{ text: "Add ➕", callback_data: COMMANDS.ADD }]],
-        },
-      }
-    );
+    await ctx.reply(BOOKMARK_NONE, {
+      reply_markup: {
+        inline_keyboard: [[{ text: "Add ➕", callback_data: COMMANDS.ADD }]],
+      },
+    });
   }
 };
 
@@ -79,14 +75,11 @@ export const GetBookmarksAction = async (
       },
     });
   } else {
-    await ctx.editMessageText(
-      `You don't have any bookmarked manga! Add one to get started`,
-      {
-        reply_markup: {
-          inline_keyboard: [[{ text: "Add ➕", callback_data: COMMANDS.ADD }]],
-        },
-      }
-    );
+    await ctx.editMessageText(BOOKMARK_NONE, {
+      reply_markup: {
+        inline_keyboard: [[{ text: "Add ➕", callback_data: COMMANDS.ADD }]],
+      },
+    });
   }
   ctx.answerCbQuery();
 };

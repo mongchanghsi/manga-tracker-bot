@@ -6,6 +6,13 @@ import { MountMap } from "telegraf/typings/telegram-types";
 import { NarrowedContext, Types } from "telegraf";
 import { BookmarkSessionContext } from "./session";
 import { Update } from "telegraf/types";
+import {
+  BOOKMARK_REMOVE_ERROR_1,
+  BOOKMARK_REMOVE_RESPONSE_1,
+  BOOKMARK_REMOVE_SUCCESS,
+  GENERIC_ERROR,
+  NOT_REGISTERED,
+} from "../../utils/messages";
 
 export const RemoveBookmarksCommand = async (
   ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
@@ -14,13 +21,11 @@ export const RemoveBookmarksCommand = async (
 
   const user = await userDb.getUser(userId);
   if (!user) {
-    await ctx.reply(
-      "Oh no, you're not registered yet. Type /start to continue"
-    );
+    await ctx.reply(NOT_REGISTERED);
   }
 
   ctx.session.command = COMMANDS.REMOVE;
-  await ctx.reply("Please provide the ID of the manga that you want to remove");
+  await ctx.reply(BOOKMARK_REMOVE_RESPONSE_1);
 };
 
 export const RemoveBookmarksAction = async (
@@ -30,7 +35,7 @@ export const RemoveBookmarksAction = async (
   >
 ) => {
   ctx.session.command = COMMANDS.REMOVE;
-  await ctx.reply("Please provide the ID of the manga that you want to remove");
+  await ctx.reply(BOOKMARK_REMOVE_RESPONSE_1);
   ctx.answerCbQuery();
 };
 
@@ -41,12 +46,10 @@ export const RemoveBookmarksFollowup = async (ctx: any) => {
 
   if (data) {
     const success = await listDb.removeBookmark(userId, +mangaId);
-    if (success) return ctx.reply("Successfully removed!");
-    return ctx.reply("Something went wrong. Please try again.");
+    if (success) return ctx.reply(BOOKMARK_REMOVE_SUCCESS);
+    return ctx.reply(GENERIC_ERROR);
   } else {
-    ctx.reply(
-      "No manga ID found. Please key in the correct manga ID from /list"
-    );
+    ctx.reply(BOOKMARK_REMOVE_ERROR_1);
   }
   ctx.session.command = COMMANDS.START;
 };

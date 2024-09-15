@@ -26,6 +26,7 @@ import { initCronJob } from "./modules/Scheduler";
 import express from "express";
 import { initStayAlive } from "./modules/Scheduler/stayAlive";
 import { RefreshBookmarksAction } from "./modules/Bookmark/refresh";
+import { FeedbackCommand, FeedbackFollowup } from "./modules/common/feedback";
 
 const app = express();
 
@@ -54,6 +55,8 @@ bot.action(COMMANDS.REMOVE, RemoveBookmarksAction);
 
 bot.action(COMMANDS.REFRESH, RefreshBookmarksAction);
 
+bot.command(COMMANDS.FEEDBACK, FeedbackCommand);
+
 bot.command(COMMANDS.HELP, HelpCommand);
 bot.action(COMMANDS.HELP, HelpAction);
 
@@ -63,6 +66,9 @@ bot.on("text", (ctx) => {
   }
   if (ctx.session.command === COMMANDS.REMOVE) {
     RemoveBookmarksFollowup(ctx);
+  }
+  if (ctx.session.command === COMMANDS.FEEDBACK) {
+    FeedbackFollowup(ctx);
   }
 });
 

@@ -19,6 +19,10 @@ const CommandList: BotCommand[] = [
     description: "Remove a bookmarked manga",
   },
   {
+    command: COMMANDS.FEEDBACK,
+    description: "Give a feedback",
+  },
+  {
     command: COMMANDS.HELP,
     description: "View the list of help commands",
   },
