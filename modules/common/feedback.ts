@@ -7,6 +7,7 @@ import feedbackDb from "../../database/Feedback";
 import {
   FEEDBACK_RESPONSE_1,
   FEEDBACK_SUCCESS,
+  GENERIC_ERROR,
   NOT_REGISTERED,
 } from "../../utils/messages";
 
@@ -26,7 +27,7 @@ export const FeedbackCommand = async (
 export const FeedbackFollowup = async (ctx: any) => {
   const userId = getUserId(ctx);
   const message = getMessage(ctx);
-  await feedbackDb.addFeedback(userId, message);
-  await ctx.reply(FEEDBACK_SUCCESS);
+  const success = await feedbackDb.addFeedback(userId, message);
+  await ctx.reply(success ? FEEDBACK_SUCCESS : GENERIC_ERROR);
   ctx.session.command = COMMANDS.START;
 };
