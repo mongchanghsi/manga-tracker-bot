@@ -6,7 +6,8 @@ import { BookmarkSessionContext } from "../Bookmark/session";
 import { CronJob } from "cron";
 import { checkIfUrlExist } from "../../utils/checker";
 
-const SCHEDUELD_TIME = "00 00 00 * * *"; // Every day at 12am;
+const SCHEDUELD_TIME_2 = "00 00 00 * * *"; // Every day at 12am;
+const SCHEDUELD_TIME = "00 00 */6 * * *"; // Every 6 hours;
 
 const ScheduleUpdateBookmarks = async (
   bot: Telegraf<BookmarkSessionContext<Update>>
