@@ -1,4 +1,4 @@
-import { NarrowedContext, Context } from "telegraf";
+import { NarrowedContext } from "telegraf";
 import { MountMap } from "telegraf/typings/telegram-types";
 import { getMessage, getUserId } from "../../utils/telegramHelper";
 import { COMMANDS } from "../../utils/command";
@@ -10,9 +10,10 @@ import {
   GENERIC_ERROR,
   NOT_REGISTERED,
 } from "../../utils/messages";
+import { BookmarkSessionContext } from "../Bookmark/session";
 
 export const FeedbackCommand = async (
-  ctx: NarrowedContext<Context, MountMap["text"]>
+  ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
 ) => {
   const userId = getUserId(ctx as any);
 
@@ -21,6 +22,7 @@ export const FeedbackCommand = async (
     await ctx.reply(NOT_REGISTERED);
   }
 
+  ctx.session.command = COMMANDS.FEEDBACK;
   await ctx.reply(FEEDBACK_RESPONSE_1);
 };
 
