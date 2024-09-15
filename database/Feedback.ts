@@ -14,7 +14,7 @@ class FeedbackDB {
       const { error } = await this.client.from(TABLE_NAME.FEEDBACK).insert({
         telegramId: userId,
         content,
-        resovled: false,
+        resolved: false,
       });
       console.log("addFeedback | Supabase | Error - ", error);
       if (!error) return true;
