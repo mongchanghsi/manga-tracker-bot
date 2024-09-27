@@ -9,6 +9,7 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
     if (_data.includes("Oops! That page can’t be found")) return false;
     if (_data.includes("not available")) return false;
     if (_data.includes("coming soon")) return false;
+    if (_data.replace(/\s+/g, "").includes("comingsoon")) return false;
     if (!_data.includes(`chapter ${chapter}`)) return false;
 
     return true;
