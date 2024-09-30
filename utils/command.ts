@@ -7,7 +7,7 @@ export enum COMMANDS {
   REMOVE = "remove",
   FEEDBACK = "feedback",
   REFRESH = "refresh",
-  ADD_COMPLETED = "add-completed",
-  GET_COMPLETED = "get-completed",
-  REMOVE_COMPLETED = "remove-completed",
+  ADD_COMPLETED = "add_completed",
+  GET_COMPLETED = "get_completed",
+  REMOVE_COMPLETED = "remove_completed",
 }
