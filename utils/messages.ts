@@ -20,3 +20,7 @@ export const FEEDBACK_SUCCESS =
   "We have recevied your feedback, the team will review it shortly. We appreciate your feedback!";
 
 export const GENERIC_ERROR = "Something went wrong. Please try again.";
+
+export const COMPLETED_ADD_SUCCESS = "Added to your completed list!";
+export const COMPLETED_NONE =
+  "You don't have any completed manga! Add one and share your list to your friends";

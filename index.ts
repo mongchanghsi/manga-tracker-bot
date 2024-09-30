@@ -27,6 +27,15 @@ import express from "express";
 import { initStayAlive } from "./modules/Scheduler/stayAlive";
 import { RefreshBookmarksAction } from "./modules/Bookmark/refresh";
 import { FeedbackCommand, FeedbackFollowup } from "./modules/common/feedback";
+import {
+  AddCompletedCommand,
+  AddCompletedFollowup,
+} from "./modules/Completed/add";
+import {
+  RemoveCompletedCommand,
+  RemoveCompletedFollowup,
+} from "./modules/Completed/delete";
+import { GetCompletedCommand } from "./modules/Completed/get";
 
 const app = express();
 
@@ -60,6 +69,10 @@ bot.command(COMMANDS.FEEDBACK, FeedbackCommand);
 bot.command(COMMANDS.HELP, HelpCommand);
 bot.action(COMMANDS.HELP, HelpAction);
 
+bot.command(COMMANDS.GET_COMPLETED, GetCompletedCommand);
+bot.command(COMMANDS.ADD_COMPLETED, AddCompletedCommand);
+bot.command(COMMANDS.REMOVE_COMPLETED, RemoveCompletedCommand);
+
 bot.on("text", (ctx) => {
   if (ctx.session.command === COMMANDS.ADD) {
     AddBookmarksFollowup(ctx);
@@ -69,6 +82,12 @@ bot.on("text", (ctx) => {
   }
   if (ctx.session.command === COMMANDS.FEEDBACK) {
     FeedbackFollowup(ctx);
+  }
+  if (ctx.session.command === COMMANDS.ADD_COMPLETED) {
+    AddCompletedFollowup(ctx);
+  }
+  if (ctx.session.command === COMMANDS.REMOVE_COMPLETED) {
+    RemoveCompletedFollowup(ctx);
   }
 });
 
