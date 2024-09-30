@@ -2,15 +2,12 @@ import { NarrowedContext, Context } from "telegraf";
 import { MountMap } from "telegraf/typings/telegram-types";
 import { getUserId } from "../../utils/telegramHelper";
 import userDb from "../../database/User";
-import { BOOKMARK_NONE, NOT_REGISTERED } from "../../utils/messages";
+import { COMPLETED_NONE, NOT_REGISTERED } from "../../utils/messages";
 import completedDb from "../../database/Completed";
 
-const getResponseStringBookmark = (bookmarks: any[]) => {
-  const _list = bookmarks
-    .map(
-      (bookmark) =>
-        `${bookmark.id}. ${bookmark.name} - Chapter ${bookmark.latestChapter} - ${bookmark.url}`
-    )
+const getResponseStringBookmark = (completeds: any[]) => {
+  const _list = completeds
+    .map((completed) => `${completed.id}. ${completed.name}`)
     .join(`\n`);
   return `Here's the list\n\n${_list}`;
 };
@@ -25,15 +22,15 @@ export const GetCompletedCommand = async (
     await ctx.reply(NOT_REGISTERED);
   }
 
-  const bookmarks = await completedDb.getCompletedList(userId);
+  const completeds = await completedDb.getCompletedList(userId);
 
-  if (bookmarks.length > 0) {
-    await ctx.replyWithHTML(getResponseStringBookmark(bookmarks), {
+  if (completeds.length > 0) {
+    await ctx.replyWithHTML(getResponseStringBookmark(completeds), {
       link_preview_options: {
         is_disabled: true,
       },
     });
   } else {
-    await ctx.reply(BOOKMARK_NONE);
+    await ctx.reply(COMPLETED_NONE);
   }
 };
