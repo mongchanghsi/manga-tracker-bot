@@ -4,7 +4,8 @@ export const NOT_REGISTERED =
 export const BOOKMARK_NONE =
   "You don't have any bookmarked manga! Add one to get started";
 export const BOOKMARK_ADD_RESPONSE_1 = "What is the name?";
-export const BOOKMARK_ADD_RESPONSE_2 = "What is the URL of the latest chapter";
+export const BOOKMARK_ADD_RESPONSE_2 =
+  "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number)";
 export const BOOKMARK_ADD_RESPONSE_3 = "What is latest chapter for this URL";
 export const BOOKMARK_ADD_SUCCESS = "Added to your bookmarks!";
 
