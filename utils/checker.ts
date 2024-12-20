@@ -10,6 +10,9 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
     if (_data.includes("not available")) return false;
     if (_data.includes("coming soon")) return false;
     if (_data.includes("stay tuned")) return false;
+    if (_data.includes("Please don’t wait for the Official website"))
+      // For https://readchainsaw-man.com/
+      return false;
     if (_data.replace(/\s+/g, "").includes("comingsoon")) return false;
     if (!_data.includes(`chapter ${chapter}`)) return false;
 
