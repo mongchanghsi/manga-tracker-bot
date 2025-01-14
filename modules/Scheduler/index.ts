@@ -31,38 +31,47 @@ const ScheduleUpdateBookmarks = async (
 ) => {
   console.log(`Checking for new chapters @ ${getCurrentTime()}`);
 
-  const users = await userDb.getAllUser();
-  users.forEach(async (_user) => {
-    const bookmarks = await listDb.getBookmarks(_user.telegramId);
-    bookmarks.forEach(async (_bookmark) => {
-      const chapterToLookFor = _bookmark.latestChapter + 1;
-      const url = _bookmark.url.replace(
-        _bookmark.latestChapter,
-        chapterToLookFor
-      );
-      console.log(`Checking ${url}`);
-      const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
-      console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
+  try {
+    const users = await userDb.getAllUser();
 
-      if (hasNextChapter) {
-        const successUpdate = await listDb.updateBookmark(
-          _bookmark.id,
-          chapterToLookFor
-        );
-        if (successUpdate) {
-          bot.telegram.sendMessage(
-            _user.telegramId,
-            `${_bookmark.name} has just released a new chapter! ${url}`,
-            {
-              link_preview_options: {
-                is_disabled: true,
-              },
-            }
+    for (const _user of users) {
+      const bookmarks = await listDb.getBookmarks(_user.telegramId);
+      for (const _bookmark of bookmarks) {
+        try {
+          const chapterToLookFor = _bookmark.latestChapter + 1;
+          const url = _bookmark.url.replace(
+            _bookmark.latestChapter,
+            chapterToLookFor
           );
+          console.log(`Checking ${url}`);
+          const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
+          console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
+
+          if (hasNextChapter) {
+            const successUpdate = await listDb.updateBookmark(
+              _bookmark.id,
+              chapterToLookFor
+            );
+            if (successUpdate) {
+              bot.telegram.sendMessage(
+                _user.telegramId,
+                `${_bookmark.name} has just released a new chapter! ${url}`,
+                {
+                  link_preview_options: {
+                    is_disabled: true,
+                  },
+                }
+              );
+            }
+          }
+        } catch (error) {
+          console.error(`Error processing bookmark ${_bookmark.id}:`, error);
         }
       }
-    });
-  });
+    }
+  } catch (error) {
+    console.error("Error scheduling updates:", error);
+  }
 };
 
 export const initCronJob = (bot: Telegraf<BookmarkSessionContext<Update>>) => {
