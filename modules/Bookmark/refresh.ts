@@ -27,7 +27,7 @@ export const RefreshBookmarksAction = async (
 
   await ctx.editMessageText("Refreshing...");
 
-  bookmarks.forEach(async (_bookmark) => {
+  for (const _bookmark of bookmarks) {
     const chapterToLookFor = _bookmark.latestChapter + 1;
     const url = _bookmark.url.replace(
       _bookmark.latestChapter,
@@ -40,7 +40,7 @@ export const RefreshBookmarksAction = async (
     if (hasNextChapter) {
       await listDb.updateBookmark(_bookmark.id, chapterToLookFor);
     }
-  });
+  }
 
   const refreshedBookmarks = await listDb.getBookmarks(userId);
   await ctx.editMessageText(getResponseStringBookmark(refreshedBookmarks), {
