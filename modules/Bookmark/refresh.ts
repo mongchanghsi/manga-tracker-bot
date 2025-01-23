@@ -3,7 +3,7 @@ import { getUserIdFromCallback } from "../../utils/telegramHelper";
 import listDb from "../../database/List";
 import { BookmarkSessionContext } from "./session";
 import { Update } from "telegraf/types";
-import { checkIfUrlExist } from "../../utils/checker";
+import { checkIfUrlExist, checkIfUrlExistWLogs } from "../../utils/checker";
 import { COMMANDS } from "../../utils/command";
 
 const getResponseStringBookmark = (bookmarks: any[]) => {
@@ -34,8 +34,11 @@ export const RefreshBookmarksAction = async (
       chapterToLookFor
     );
     console.log(`Checking ${url}`);
-    const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
-    console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
+    const hasNextChapter = await checkIfUrlExistWLogs(url, chapterToLookFor);
+    console.log(
+      hasNextChapter ? "🟢" : `🔴 | Reason: ${hasNextChapter}`,
+      `- ${url}`
+    );
 
     if (hasNextChapter) {
       await listDb.updateBookmark(_bookmark.id, chapterToLookFor);
