@@ -31,11 +31,6 @@ export const checkIfUrlExistWLogs = async (url: string, chapter: number) => {
 
     const data = await response.text();
     const _data = data.toLowerCase();
-    if (url.includes("tenseislime")) {
-      console.log("Is the log here");
-      console.log(_data);
-      console.log("got chapter number", _data.includes("122"));
-    }
 
     if (_data.includes("not found")) return "not found";
     if (_data.includes("Oops! That page can’t be found"))
