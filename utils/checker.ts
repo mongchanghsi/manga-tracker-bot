@@ -5,6 +5,12 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
 
     const data = await response.text();
     const _data = data.toLowerCase();
+    if (
+      url ===
+      "https://ww1.tenseislime.com/manga/tensei-shitara-slime-datta-ken-chapter-122/"
+    ) {
+      console.log(_data);
+    }
     if (_data.includes("not found")) return false;
     if (_data.includes("Oops! That page can’t be found")) return false;
     if (_data.includes("not available")) return false;
