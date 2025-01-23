@@ -36,11 +36,11 @@ export const RefreshBookmarksAction = async (
     console.log(`Checking ${url}`);
     const hasNextChapter = await checkIfUrlExistWLogs(url, chapterToLookFor);
     console.log(
-      hasNextChapter ? "🟢" : `🔴 | Reason: ${hasNextChapter}`,
+      !hasNextChapter ? "🟢" : `🔴 | Reason: ${hasNextChapter}`,
       `- ${url}`
     );
 
-    if (hasNextChapter) {
+    if (!hasNextChapter) {
       await listDb.updateBookmark(_bookmark.id, chapterToLookFor);
     }
   }
