@@ -16,6 +16,9 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
       return false;
     if (_data.replace(/\s+/g, "").includes("comingsoon")) return false;
     if (!_data.includes(`chapter ${chapter}`)) return false;
+    if (_data.includes("a few moments separate us from the release of"))
+      // For https://w15.reincarnationofsuicidalbattlegod.com/
+      return false;
 
     return true;
   } catch (error) {
