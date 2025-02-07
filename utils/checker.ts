@@ -19,6 +19,9 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
     if (_data.includes("a few moments separate us from the release of"))
       // For https://w15.reincarnationofsuicidalbattlegod.com/
       return false;
+    if (_data.includes("Don’t wait for the official website"))
+      // For https://extrasacademysurvivalguide.online/
+      return false;
 
     return true;
   } catch (error) {
