@@ -22,6 +22,7 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
     if (_data.includes("Don’t wait for the official website"))
       // For https://extrasacademysurvivalguide.online/
       return false;
+    if (_data.includes("This is a placeholder")) return false;
 
     return true;
   } catch (error) {
