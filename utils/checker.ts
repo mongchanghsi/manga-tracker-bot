@@ -24,6 +24,7 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
       return false;
     if (_data.includes("This is a placeholder")) return false;
     if (_data.includes("Info &nbsp")) return false; // For https://thereincarnatedassassinisageniusswordsman.us/
+    if (_data.includes("The new chapter will be available soon")) return false; // https://theregressedsonofadukeisanassassin.club/
 
     return true;
   } catch (error) {
