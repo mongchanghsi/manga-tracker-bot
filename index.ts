@@ -54,7 +54,8 @@ bot.start(StartCommand);
 bot.command(COMMANDS.START, StartCommand);
 
 bot.command(COMMANDS.LIST, GetBookmarksCommand);
-bot.action(COMMANDS.LIST, GetBookmarksAction);
+// bot.action(COMMANDS.LIST, GetBookmarksAction);
+bot.action(/LIST:(\d+)/, GetBookmarksAction);
 
 bot.command(COMMANDS.ADD, AddBookmarksCommand);
 bot.action(COMMANDS.ADD, AddBookmarksAction);

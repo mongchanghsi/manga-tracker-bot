@@ -26,7 +26,7 @@ const StartCommand = async (
       inline_keyboard: [
         [
           { text: "Add ➕", callback_data: COMMANDS.ADD },
-          { text: "Bookmarked ⭐", callback_data: COMMANDS.LIST },
+          { text: "Bookmarked ⭐", callback_data: `${COMMANDS.LIST}:0` },
         ],
         [
           Markup.button.url("Look for latest anime", MY_ANIME_LIST_URL),

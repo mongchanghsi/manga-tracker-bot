@@ -3,6 +3,7 @@ import { TABLE_NAME } from "./table_name";
 import getSupabaseClient from "./client";
 
 const CHAPTER_PLACEHOLDER = `{chapter-placeholder}`;
+export const PAGE_SIZE = 20;
 
 class ListDB {
   client: SupabaseClient;
@@ -48,12 +49,15 @@ class ListDB {
     }
   }
 
-  async getBookmarks(userId: number) {
+  async getBookmarks(userId: number, page: number = 0) {
     try {
       const { data, error } = await this.client
         .from(TABLE_NAME.LIST)
         .select("*")
-        .eq("telegramId", userId);
+        .eq("telegramId", userId)
+        .order("id", { ascending: true })
+        .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1);
+
       if (data && data.length > 0) {
         return data.map((_data) => {
           return {
