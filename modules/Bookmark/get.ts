@@ -50,7 +50,7 @@ export const GetBookmarksCommand = async (
 
     await ctx.replyWithHTML(getResponseStringBookmark(bookmarks), {
       reply_markup: {
-        inline_keyboard: DEFAULT_GET_INLINE_KEYBOARD_COMMANDS,
+        inline_keyboard: command,
       },
       link_preview_options: {
         is_disabled: true,
