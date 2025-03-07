@@ -6,7 +6,7 @@ import { COMMANDS } from "../../utils/command";
 import userDb from "../../database/User";
 import listDb, { PAGE_SIZE } from "../../database/List";
 import { BOOKMARK_NONE, NOT_REGISTERED } from "../../utils/messages";
-import { INLINE_KEYBOARD } from "../../utils/types";
+import { Bookmark, INLINE_KEYBOARD } from "../../utils/types";
 
 const DEFAULT_GET_INLINE_KEYBOARD_COMMANDS: INLINE_KEYBOARD = [
   [
@@ -16,7 +16,7 @@ const DEFAULT_GET_INLINE_KEYBOARD_COMMANDS: INLINE_KEYBOARD = [
   [{ text: "Refresh 🔄", callback_data: COMMANDS.REFRESH }],
 ];
 
-const getResponseStringBookmark = (bookmarks: any[], page: number = 0) => {
+const getResponseStringBookmark = (bookmarks: Bookmark[], page: number = 0) => {
   const _list = bookmarks
     .map(
       (bookmark) =>

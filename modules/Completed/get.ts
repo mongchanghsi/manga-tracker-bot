@@ -4,8 +4,9 @@ import { getUserId } from "../../utils/telegramHelper";
 import userDb from "../../database/User";
 import { COMPLETED_NONE, NOT_REGISTERED } from "../../utils/messages";
 import completedDb from "../../database/Completed";
+import { Bookmark } from "../../utils/types";
 
-const getResponseStringBookmark = (completeds: any[]) => {
+const getResponseStringBookmark = (completeds: Bookmark[]) => {
   const _list = completeds
     .map((completed) => `${completed.id}. ${completed.name}`)
     .join(`\n`);

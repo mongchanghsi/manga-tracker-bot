@@ -1,6 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { TABLE_NAME } from "./table_name";
 import getSupabaseClient from "./client";
+import { Bookmark } from "../utils/types";
 
 const CHAPTER_PLACEHOLDER = `{chapter-placeholder}`;
 export const PAGE_SIZE = 20;
@@ -19,7 +20,8 @@ class ListDB {
         .select("*")
         .eq("telegramId", userId)
         .eq("id", bookmarkId);
-      if (data && data.length > 0) return data[0];
+      if (error) return null;
+      if (data.length > 0) return data[0];
       return null;
     } catch (error) {
       console.log("getBookmark | Error - ", error);
@@ -49,7 +51,7 @@ class ListDB {
     }
   }
 
-  async getBookmarks(userId: number, page: number = 0) {
+  async getBookmarks(userId: number, page: number = 0): Promise<Bookmark[]> {
     try {
       const { data, error } = await this.client
         .from(TABLE_NAME.LIST)
@@ -58,7 +60,8 @@ class ListDB {
         .order("id", { ascending: true })
         .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1);
 
-      if (data && data.length > 0) {
+      if (error) return [];
+      if (data.length > 0) {
         return data.map((_data) => {
           return {
             ..._data,
@@ -80,6 +83,7 @@ class ListDB {
         .delete()
         .eq("telegramId", userId)
         .eq("id", bookmarkId);
+      if (error) return false;
       return true;
     } catch (error) {
       console.log("removeBookmark | Error - ", error);

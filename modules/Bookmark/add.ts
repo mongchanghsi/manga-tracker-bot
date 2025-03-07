@@ -1,11 +1,11 @@
-import { NarrowedContext, Context, Types } from "telegraf";
+import { NarrowedContext, Types } from "telegraf";
 import { MountMap } from "telegraf/typings/telegram-types";
 import { getMessage, getUserId } from "../../utils/telegramHelper";
 import userDb from "../../database/User";
 import { COMMANDS } from "../../utils/command";
 import listDb from "../../database/List";
 import { BookmarkSessionContext, DEFAULT_ADD_SESSION, STEP } from "./session";
-import { Update } from "telegraf/types";
+import { Message, Update } from "telegraf/types";
 import {
   BOOKMARK_ADD_RESPONSE_1,
   BOOKMARK_ADD_RESPONSE_2,
@@ -17,7 +17,7 @@ import {
 export const AddBookmarksCommand = async (
   ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
 ) => {
-  const userId = getUserId(ctx as any);
+  const userId = getUserId(ctx);
 
   const user = await userDb.getUser(userId);
   if (!user) {
@@ -41,7 +41,15 @@ export const AddBookmarksAction = async (
   ctx.answerCbQuery();
 };
 
-export const AddBookmarksFollowup = async (ctx: any) => {
+export const AddBookmarksFollowup = async (
+  ctx: NarrowedContext<
+    BookmarkSessionContext<Update>,
+    {
+      message: Update.New & Update.NonChannel & Message.TextMessage;
+      update_id: number;
+    }
+  >
+) => {
   if (ctx.session.add.step === STEP.NAME) {
     ctx.session.add.name = getMessage(ctx);
     ctx.session.add.step = STEP.URL;

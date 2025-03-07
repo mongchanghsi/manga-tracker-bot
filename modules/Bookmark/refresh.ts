@@ -5,8 +5,9 @@ import { BookmarkSessionContext } from "./session";
 import { Update } from "telegraf/types";
 import { checkIfUrlExist } from "../../utils/checker";
 import { COMMANDS } from "../../utils/command";
+import { Bookmark } from "../../utils/types";
 
-const getResponseStringBookmark = (bookmarks: any[]) => {
+const getResponseStringBookmark = (bookmarks: Bookmark[]) => {
   const _list = bookmarks
     .map(
       (bookmark) =>
@@ -30,8 +31,8 @@ export const RefreshBookmarksAction = async (
   for (const _bookmark of bookmarks) {
     const chapterToLookFor = _bookmark.latestChapter + 1;
     const url = _bookmark.url.replace(
-      _bookmark.latestChapter,
-      chapterToLookFor
+      _bookmark.latestChapter.toString(),
+      chapterToLookFor.toString()
     );
     console.log(`Checking ${url}`);
     const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
