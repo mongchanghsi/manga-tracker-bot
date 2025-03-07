@@ -1,4 +1,4 @@
-import { SupabaseClient, createClient } from "@supabase/supabase-js";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { TABLE_NAME } from "./table_name";
 import getSupabaseClient from "./client";
 
@@ -28,6 +28,7 @@ class UserDB {
         .from(TABLE_NAME.USER)
         .select("*")
         .eq("telegramId", userId);
+      if (error) return null;
       if (data && Array(data)) return data[0];
       return null;
     } catch (error) {
@@ -41,6 +42,7 @@ class UserDB {
       const { data, error } = await this.client
         .from(TABLE_NAME.USER)
         .select("*");
+      if (error) return [];
       if (data && data.length > 0) return data;
       return [];
     } catch (error) {

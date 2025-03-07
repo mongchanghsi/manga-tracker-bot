@@ -1,7 +1,6 @@
-import { NarrowedContext, Context, Telegraf, Markup } from "telegraf";
+import { NarrowedContext, Context, Markup } from "telegraf";
 import { MountMap } from "telegraf/typings/telegram-types";
 import { getFirstName, getUserId } from "../../utils/telegramHelper";
-import { Update } from "telegraf/typings/core/types/typegram";
 import { MY_ANIME_LIST_URL } from "../../utils/url";
 import { COMMANDS } from "../../utils/command";
 import userDb from "../../database/User";

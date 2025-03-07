@@ -4,3 +4,10 @@ type INLINE_COMMAND = {
 };
 
 export type INLINE_KEYBOARD = INLINE_COMMAND[][];
+
+export type Bookmark = {
+  id: number;
+  name: string;
+  latestChapter: number;
+  url: string;
+};

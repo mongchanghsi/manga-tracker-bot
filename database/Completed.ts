@@ -16,7 +16,8 @@ class CompletedDB {
         .select("*")
         .eq("telegramId", userId)
         .eq("id", bookmarkId);
-      if (data && data.length > 0) return data[0];
+      if (error) return null;
+      if (data.length > 0) return data[0];
       return null;
     } catch (error) {
       console.log("getCompleted | Error - ", error);
@@ -44,6 +45,7 @@ class CompletedDB {
         .from(TABLE_NAME.COMPELTED)
         .select("*")
         .eq("telegramId", userId);
+      if (error) return [];
       if (data && data.length > 0) return data;
       return [];
     } catch (error) {
@@ -59,6 +61,7 @@ class CompletedDB {
         .delete()
         .eq("telegramId", userId)
         .eq("id", bookmarkId);
+      if (error) return false;
       return true;
     } catch (error) {
       console.log("removeCompleted | Error - ", error);

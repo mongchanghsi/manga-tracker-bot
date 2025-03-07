@@ -5,7 +5,7 @@ import listDb from "../../database/List";
 import { MountMap } from "telegraf/typings/telegram-types";
 import { NarrowedContext, Types } from "telegraf";
 import { BookmarkSessionContext } from "./session";
-import { Update } from "telegraf/types";
+import { Message, Update } from "telegraf/types";
 import {
   BOOKMARK_REMOVE_ERROR_1,
   BOOKMARK_REMOVE_RESPONSE_1,
@@ -17,7 +17,15 @@ import {
 export const RemoveBookmarksCommand = async (
   ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
 ) => {
-  const userId = getUserId(ctx as any);
+  const userId = getUserId(
+    ctx as NarrowedContext<
+      BookmarkSessionContext<Update>,
+      {
+        message: Update.New & Update.NonChannel & Message.TextMessage;
+        update_id: number;
+      }
+    >
+  );
 
   const user = await userDb.getUser(userId);
   if (!user) {
@@ -39,7 +47,15 @@ export const RemoveBookmarksAction = async (
   ctx.answerCbQuery();
 };
 
-export const RemoveBookmarksFollowup = async (ctx: any) => {
+export const RemoveBookmarksFollowup = async (
+  ctx: NarrowedContext<
+    BookmarkSessionContext<Update>,
+    {
+      message: Update.New & Update.NonChannel & Message.TextMessage;
+      update_id: number;
+    }
+  >
+) => {
   const userId = getUserId(ctx);
   const mangaId = getMessage(ctx);
   const data = await listDb.getBookmark(userId, +mangaId);

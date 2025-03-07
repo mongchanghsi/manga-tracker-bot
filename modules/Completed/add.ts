@@ -10,11 +10,12 @@ import {
 } from "../../utils/messages";
 import { BookmarkSessionContext } from "../Bookmark/session";
 import completedDb from "../../database/Completed";
+import { Message, Update } from "telegraf/types";
 
 export const AddCompletedCommand = async (
   ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
 ) => {
-  const userId = getUserId(ctx as any);
+  const userId = getUserId(ctx);
 
   const user = await userDb.getUser(userId);
   if (!user) {
@@ -25,7 +26,15 @@ export const AddCompletedCommand = async (
   await ctx.reply(BOOKMARK_ADD_RESPONSE_1);
 };
 
-export const AddCompletedFollowup = async (ctx: any) => {
+export const AddCompletedFollowup = async (
+  ctx: NarrowedContext<
+    BookmarkSessionContext<Update>,
+    {
+      message: Update.New & Update.NonChannel & Message.TextMessage;
+      update_id: number;
+    }
+  >
+) => {
   const name = getMessage(ctx);
   await completedDb.addCompleted(getUserId(ctx), name);
   await ctx.reply(COMPLETED_ADD_SUCCESS);

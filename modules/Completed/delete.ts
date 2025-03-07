@@ -2,7 +2,7 @@ import { getMessage, getUserId } from "../../utils/telegramHelper";
 import userDb from "../../database/User";
 import { COMMANDS } from "../../utils/command";
 import { MountMap } from "telegraf/typings/telegram-types";
-import { NarrowedContext, Types } from "telegraf";
+import { NarrowedContext } from "telegraf";
 import {
   BOOKMARK_REMOVE_ERROR_1,
   BOOKMARK_REMOVE_RESPONSE_1,
@@ -12,11 +12,12 @@ import {
 } from "../../utils/messages";
 import { BookmarkSessionContext } from "../Bookmark/session";
 import completedDb from "../../database/Completed";
+import { Message, Update } from "telegraf/types";
 
 export const RemoveCompletedCommand = async (
   ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
 ) => {
-  const userId = getUserId(ctx as any);
+  const userId = getUserId(ctx);
 
   const user = await userDb.getUser(userId);
   if (!user) {
@@ -27,7 +28,15 @@ export const RemoveCompletedCommand = async (
   await ctx.reply(BOOKMARK_REMOVE_RESPONSE_1);
 };
 
-export const RemoveCompletedFollowup = async (ctx: any) => {
+export const RemoveCompletedFollowup = async (
+  ctx: NarrowedContext<
+    BookmarkSessionContext<Update>,
+    {
+      message: Update.New & Update.NonChannel & Message.TextMessage;
+      update_id: number;
+    }
+  >
+) => {
   const userId = getUserId(ctx);
   const mangaId = getMessage(ctx);
   const data = await completedDb.getCompleted(userId, +mangaId);

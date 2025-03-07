@@ -11,11 +11,12 @@ import {
   NOT_REGISTERED,
 } from "../../utils/messages";
 import { BookmarkSessionContext } from "../Bookmark/session";
+import { Message, Update } from "telegraf/types";
 
 export const FeedbackCommand = async (
   ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
 ) => {
-  const userId = getUserId(ctx as any);
+  const userId = getUserId(ctx);
 
   const user = await userDb.getUser(userId);
   if (!user) {
@@ -26,7 +27,15 @@ export const FeedbackCommand = async (
   await ctx.reply(FEEDBACK_RESPONSE_1);
 };
 
-export const FeedbackFollowup = async (ctx: any) => {
+export const FeedbackFollowup = async (
+  ctx: NarrowedContext<
+    BookmarkSessionContext<Update>,
+    {
+      message: Update.New & Update.NonChannel & Message.TextMessage;
+      update_id: number;
+    }
+  >
+) => {
   const userId = getUserId(ctx);
   const message = getMessage(ctx);
   const success = await feedbackDb.addFeedback(userId, message);

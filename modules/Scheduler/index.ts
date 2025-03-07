@@ -6,7 +6,6 @@ import { BookmarkSessionContext } from "../Bookmark/session";
 import { CronJob } from "cron";
 import { checkIfUrlExist } from "../../utils/checker";
 
-const SCHEDUELD_TIME_2 = "00 00 00 * * *"; // Every day at 12am;
 const SCHEDUELD_TIME = "00 00 */6 * * *"; // Every 6 hours;
 
 const getCurrentTime = (): string => {
@@ -16,14 +15,14 @@ const getCurrentTime = (): string => {
   const month = String(_date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
   const year = _date.getFullYear();
 
-  let hours: any = _date.getHours();
+  let hours = _date.getHours();
   const minutes = String(_date.getMinutes()).padStart(2, "0");
   const ampm = hours >= 12 ? "PM" : "AM";
 
   hours = hours % 12; // Convert to 12-hour format
-  hours = hours ? String(hours).padStart(2, "0") : "12"; // '0' should be '12'
+  const _hours = hours ? String(hours).padStart(2, "0") : "12"; // '0' should be '12'
 
-  return `${day}/${month}/${year} ${hours}:${minutes}${ampm}`;
+  return `${day}/${month}/${year} ${_hours}:${minutes}${ampm}`;
 };
 
 const ScheduleUpdateBookmarks = async (
@@ -40,8 +39,8 @@ const ScheduleUpdateBookmarks = async (
         try {
           const chapterToLookFor = _bookmark.latestChapter + 1;
           const url = _bookmark.url.replace(
-            _bookmark.latestChapter,
-            chapterToLookFor
+            _bookmark.latestChapter.toString(),
+            chapterToLookFor.toString()
           );
           console.log(`Checking ${url}`);
           const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);

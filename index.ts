@@ -1,4 +1,4 @@
-import { Telegraf, session, type Context } from "telegraf";
+import { Telegraf, session } from "telegraf";
 import ENVIRONMENT from "./configuration/environment";
 import { COMMANDS } from "./utils/command";
 import CommandList from "./utils/commandShortcutMenu";
