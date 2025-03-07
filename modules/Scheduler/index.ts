@@ -4,7 +4,7 @@ import userDb from "../../database/User";
 import listDb from "../../database/List";
 import { BookmarkSessionContext } from "../Bookmark/session";
 import { CronJob } from "cron";
-import { checkIfUrlExist } from "../../utils/checker";
+import { checkIfUrlExist, isValidUrl } from "../../utils/checker";
 
 const SCHEDUELD_TIME = "00 00 */6 * * *"; // Every 6 hours;
 
@@ -37,6 +37,13 @@ const ScheduleUpdateBookmarks = async (
       const bookmarks = await listDb.getBookmarks(_user.telegramId);
       for (const _bookmark of bookmarks) {
         try {
+          if (
+            _bookmark.latestChapter === null ||
+            _bookmark.url === null ||
+            _bookmark.url.length === 0 ||
+            !isValidUrl(_bookmark.url)
+          )
+            continue; // Skips checking if latestChapter is null or not a valid url
           const chapterToLookFor = _bookmark.latestChapter + 1;
           const url = _bookmark.url.replace(
             _bookmark.latestChapter.toString(),

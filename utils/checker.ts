@@ -32,3 +32,8 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
     return false;
   }
 };
+
+export const isValidUrl = (url: string) => {
+  const regex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/[^\s]*)?$/;
+  return regex.test(url);
+};
