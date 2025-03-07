@@ -16,14 +16,14 @@ const DEFAULT_GET_INLINE_KEYBOARD_COMMANDS: INLINE_KEYBOARD = [
   [{ text: "Refresh 🔄", callback_data: COMMANDS.REFRESH }],
 ];
 
-const getResponseStringBookmark = (bookmarks: any[]) => {
+const getResponseStringBookmark = (bookmarks: any[], page: number = 0) => {
   const _list = bookmarks
     .map(
       (bookmark) =>
         `${bookmark.id}. ${bookmark.name} - Chapter ${bookmark.latestChapter} - ${bookmark.url}`
     )
     .join(`\n`);
-  return `Here's the list\n\n${_list}`;
+  return `Here's the list - Page ${page}\n\n${_list}`;
 };
 
 export const GetBookmarksCommand = async (
@@ -95,14 +95,17 @@ export const GetBookmarksAction = async (
       command = [pageCommand, ...command];
     }
 
-    await ctx.editMessageText(getResponseStringBookmark(bookmarks), {
-      reply_markup: {
-        inline_keyboard: command,
-      },
-      link_preview_options: {
-        is_disabled: true,
-      },
-    });
+    await ctx.editMessageText(
+      getResponseStringBookmark(bookmarks, +pageNumber),
+      {
+        reply_markup: {
+          inline_keyboard: command,
+        },
+        link_preview_options: {
+          is_disabled: true,
+        },
+      }
+    );
   } else {
     await ctx.editMessageText(BOOKMARK_NONE, {
       reply_markup: {
