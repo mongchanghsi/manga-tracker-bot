@@ -23,7 +23,7 @@ const getResponseStringBookmark = (bookmarks: Bookmark[], page: number = 0) => {
         `${bookmark.id}. ${bookmark.name} - Chapter ${bookmark.latestChapter} - ${bookmark.url}`
     )
     .join(`\n`);
-  return `Here's the list - Page ${page}\n\n${_list}`;
+  return `Here's the list - Page ${page + 1}\n\n${_list}`;
 };
 
 export const GetBookmarksCommand = async (
