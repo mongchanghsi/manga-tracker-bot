@@ -1,1 +1,1 @@
-export const MY_ANIME_LIST_URL = "https://myanimelist.net/";
+export const TOP_MANGA_LIST = "https://myanimelist.net/topmanga.php";
