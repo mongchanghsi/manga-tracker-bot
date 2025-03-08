@@ -1,7 +1,7 @@
 import { NarrowedContext, Context, Markup } from "telegraf";
 import { MountMap } from "telegraf/typings/telegram-types";
 import { getFirstName, getUserId } from "../../utils/telegramHelper";
-import { MY_ANIME_LIST_URL } from "../../utils/url";
+import { TOP_MANGA_LIST } from "../../utils/url";
 import { COMMANDS } from "../../utils/command";
 import userDb from "../../database/User";
 
@@ -28,7 +28,7 @@ const StartCommand = async (
           { text: "Bookmarked ⭐", callback_data: `${COMMANDS.LIST}:0` },
         ],
         [
-          Markup.button.url("Look for latest anime", MY_ANIME_LIST_URL),
+          Markup.button.url("Look for top manga to read", TOP_MANGA_LIST),
           { text: "Help ℹ️", callback_data: COMMANDS.HELP },
         ],
       ],
