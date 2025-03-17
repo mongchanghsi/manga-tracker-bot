@@ -36,6 +36,7 @@ import {
   RemoveCompletedFollowup,
 } from "./modules/Completed/delete";
 import { GetCompletedCommand } from "./modules/Completed/get";
+import { RecommendCommand } from "./modules/common/recommend";
 
 const app = express();
 
@@ -72,6 +73,8 @@ bot.action(COMMANDS.HELP, HelpAction);
 bot.command(COMMANDS.GET_COMPLETED, GetCompletedCommand);
 bot.command(COMMANDS.ADD_COMPLETED, AddCompletedCommand);
 bot.command(COMMANDS.REMOVE_COMPLETED, RemoveCompletedCommand);
+
+bot.command(COMMANDS.RECOMMEND, RecommendCommand);
 
 bot.on("text", (ctx) => {
   if (ctx.session.command === COMMANDS.ADD) {

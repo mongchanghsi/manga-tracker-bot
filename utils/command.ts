@@ -10,4 +10,5 @@ export enum COMMANDS {
   ADD_COMPLETED = "add_completed",
   GET_COMPLETED = "get_completed",
   REMOVE_COMPLETED = "remove_completed",
+  RECOMMEND = "recommend",
 }
