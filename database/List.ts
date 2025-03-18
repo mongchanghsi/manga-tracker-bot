@@ -13,6 +13,15 @@ class ListDB {
     this.client = getSupabaseClient;
   }
 
+  async getTotalBookmarkCount(userId: number) {
+    const { count, error } = await this.client
+      .from(TABLE_NAME.LIST)
+      .select("*", { count: "exact", head: true })
+      .eq("telegramId", userId);
+    if (error) return 0;
+    return count;
+  }
+
   async getBookmark(userId: number, bookmarkId: number) {
     try {
       const { data, error } = await this.client

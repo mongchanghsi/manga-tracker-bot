@@ -72,10 +72,11 @@ export const GetBookmarksAction = async (
   const pageNumber = (ctx as Context<Update> & { match: RegExpExecArray })
     .match[1];
   const bookmarks = await listDb.getBookmarks(userId, +pageNumber);
+  const totalBookmarkCount = (await listDb.getTotalBookmarkCount(userId)) || 0;
+  const hasMore = totalBookmarkCount > +pageNumber * PAGE_SIZE;
 
   if (bookmarks && bookmarks.length > 0) {
     let command = [...DEFAULT_GET_INLINE_KEYBOARD_COMMANDS];
-    const hasNextPage = bookmarks.length === PAGE_SIZE;
     const hasPrevPage = +pageNumber > 0;
     const pageCommand = [];
     if (hasPrevPage)
@@ -84,7 +85,7 @@ export const GetBookmarksAction = async (
         callback_data: `${COMMANDS.LIST}:${+pageNumber - 1}`,
       });
 
-    if (hasNextPage) {
+    if (hasMore) {
       pageCommand.push({
         text: "Next ➡️",
         callback_data: `${COMMANDS.LIST}:${+pageNumber + 1}`,
