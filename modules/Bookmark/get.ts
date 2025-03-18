@@ -73,7 +73,7 @@ export const GetBookmarksAction = async (
     .match[1];
   const bookmarks = await listDb.getBookmarks(userId, +pageNumber);
   const totalBookmarkCount = (await listDb.getTotalBookmarkCount(userId)) || 0;
-  const hasMore = totalBookmarkCount > +pageNumber * PAGE_SIZE;
+  const hasMore = totalBookmarkCount > (+pageNumber + 1) * PAGE_SIZE;
 
   if (bookmarks && bookmarks.length > 0) {
     let command = [...DEFAULT_GET_INLINE_KEYBOARD_COMMANDS];
