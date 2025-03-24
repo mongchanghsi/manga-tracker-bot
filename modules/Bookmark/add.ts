@@ -23,11 +23,11 @@ export const AddBookmarksCommand = async (
 
   const user = await userDb.getUser(userId);
   if (!user) {
-    await ctx.reply(NOT_REGISTERED);
+    return await ctx.reply(NOT_REGISTERED);
   }
 
   if (ENVIRONMENT.PAUSE_SERVICE) {
-    await ctx.reply(SERVICE_PAUSED);
+    return await ctx.reply(SERVICE_PAUSED);
   }
 
   ctx.session.command = COMMANDS.ADD;
@@ -42,7 +42,7 @@ export const AddBookmarksAction = async (
   >
 ) => {
   if (ENVIRONMENT.PAUSE_SERVICE) {
-    await ctx.reply(SERVICE_PAUSED);
+    return await ctx.reply(SERVICE_PAUSED);
   }
 
   ctx.session.command = COMMANDS.ADD;
