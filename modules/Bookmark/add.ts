@@ -12,7 +12,9 @@ import {
   BOOKMARK_ADD_RESPONSE_3,
   BOOKMARK_ADD_SUCCESS,
   NOT_REGISTERED,
+  SERVICE_PAUSED,
 } from "../../utils/messages";
+import ENVIRONMENT from "../../configuration/environment";
 
 export const AddBookmarksCommand = async (
   ctx: NarrowedContext<BookmarkSessionContext, MountMap["text"]>
@@ -22,6 +24,10 @@ export const AddBookmarksCommand = async (
   const user = await userDb.getUser(userId);
   if (!user) {
     await ctx.reply(NOT_REGISTERED);
+  }
+
+  if (ENVIRONMENT.PAUSE_SERVICE) {
+    await ctx.reply(SERVICE_PAUSED);
   }
 
   ctx.session.command = COMMANDS.ADD;
@@ -35,6 +41,10 @@ export const AddBookmarksAction = async (
     Types.MountMap["callback_query"]
   >
 ) => {
+  if (ENVIRONMENT.PAUSE_SERVICE) {
+    await ctx.reply(SERVICE_PAUSED);
+  }
+
   ctx.session.command = COMMANDS.ADD;
   ctx.session.add.step = STEP.NAME;
   await ctx.reply(BOOKMARK_ADD_RESPONSE_1);

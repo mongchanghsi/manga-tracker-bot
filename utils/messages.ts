@@ -25,3 +25,5 @@ export const GENERIC_ERROR = "Something went wrong. Please try again.";
 export const COMPLETED_ADD_SUCCESS = "Added to your completed list!";
 export const COMPLETED_NONE =
   "You don't have any completed manga! Add one and share your list to your friends";
+
+export const SERVICE_PAUSED = `We are currently in maintance. We will provide an announcement when the service is up!`;
