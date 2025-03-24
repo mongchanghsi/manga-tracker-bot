@@ -116,3 +116,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1", announcementRoutes);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
