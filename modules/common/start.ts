@@ -18,7 +18,7 @@ const StartCommand = async (
 
   const responseMessage = user
     ? `Welcome back ${firstName}! Select one of the options to get started!`
-    : `Hey ${firstName}! Welcome to Manga Tracker Bot!\n\nThis bots sends you a notification whenever your bookmarked manga has a new release!\n\nIt works by tracking the latest chapter + 1 based from the URL you provide, so you will have to provide a URL that contains the chapter number! (MangaDEX doesn't work. Recommended kunmanga/mangafire/kingofshojo/manhuaus),\nOther individual sites such as https://standardsofreincarnation.com may or may not work all the time, if it doesn't leave a /feedback`;
+    : `Hey ${firstName}! Welcome to Manga Tracker Bot!\n\nThis bots sends you a notification whenever your bookmarked manga has a new release!\n\nIt works by tracking the latest chapter + 1 based from the URL you provide, so you will have to provide a URL that contains the chapter number! (MangaDEX doesn't work. Recommended kunmanga/mangafire/kingofshojo/manhuaus).\nOther individual sites such as https://standardsofreincarnation.com may or may not work all the time, if it doesn't leave a /feedback`;
 
   await ctx.reply(responseMessage, {
     reply_markup: {
