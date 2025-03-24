@@ -5,7 +5,7 @@ export const BOOKMARK_NONE =
   "You don't have any bookmarked manga! Add one to get started";
 export const BOOKMARK_ADD_RESPONSE_1 = "What is the name?";
 export const BOOKMARK_ADD_RESPONSE_2 =
-  "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number and the site isn't a centralized manga such as MangaDEX)";
+  "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number. Recommended kunmanga/mangafire/kingofshojo/manhuaus)";
 export const BOOKMARK_ADD_RESPONSE_3 = "What is latest chapter for this URL";
 export const BOOKMARK_ADD_SUCCESS = "Added to your bookmarks!";
 
