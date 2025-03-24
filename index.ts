@@ -1,4 +1,4 @@
-import { Telegraf, session } from "telegraf";
+import { session } from "telegraf";
 import ENVIRONMENT from "./configuration/environment";
 import { COMMANDS } from "./utils/command";
 import CommandList from "./utils/commandShortcutMenu";
@@ -18,10 +18,7 @@ import {
   RemoveBookmarksCommand,
   RemoveBookmarksFollowup,
 } from "./modules/Bookmark/delete";
-import {
-  DEFAULT_ADD_SESSION,
-  BookmarkSessionContext,
-} from "./modules/Bookmark/session";
+import { DEFAULT_ADD_SESSION } from "./modules/Bookmark/session";
 import { initCronJob } from "./modules/Scheduler";
 import express from "express";
 import { initStayAlive } from "./modules/Scheduler/stayAlive";
@@ -37,10 +34,12 @@ import {
 } from "./modules/Completed/delete";
 import { GetCompletedCommand } from "./modules/Completed/get";
 import { RecommendCommand } from "./modules/common/recommend";
+import bot from "./modules/common/init-bot";
+import bodyParser from "body-parser";
+import announcementRoutes from "./modules/Announcement/routes";
 
 const app = express();
-
-const bot = new Telegraf<BookmarkSessionContext>(ENVIRONMENT.BOT_TOKEN);
+app.use(bodyParser.json());
 
 bot.use(
   session({
@@ -115,3 +114,5 @@ if (args[args.length - 1] === "--local") {
 app.get("/", (req, res) => {
   res.send("Bot is healthy!");
 });
+
+app.use("/api/v1", announcementRoutes);
