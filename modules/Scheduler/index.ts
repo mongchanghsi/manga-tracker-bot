@@ -51,23 +51,31 @@ const ScheduleUpdateBookmarks = async (
           );
           console.log(`Checking ${url}`);
           const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
-          console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
-
-          if (hasNextChapter) {
-            const successUpdate = await listDb.updateBookmark(
-              _bookmark.id,
-              chapterToLookFor
+          if (hasNextChapter === 500) {
+            console.log("🔴 There is an issue with this URL ", `- ${url}`);
+            bot.telegram.sendMessage(
+              _user.telegramId,
+              `⚠️ ${_bookmark.name} - ${url} - There's is an issue with this URL which is preventing the bot from looking up the latest chapter. Advise to try another source!`
             );
-            if (successUpdate) {
-              bot.telegram.sendMessage(
-                _user.telegramId,
-                `${_bookmark.name} has just released a new chapter! ${url}`,
-                {
-                  link_preview_options: {
-                    is_disabled: true,
-                  },
-                }
+          } else {
+            console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
+
+            if (hasNextChapter) {
+              const successUpdate = await listDb.updateBookmark(
+                _bookmark.id,
+                chapterToLookFor
               );
+              if (successUpdate) {
+                bot.telegram.sendMessage(
+                  _user.telegramId,
+                  `${_bookmark.name} has just released a new chapter! ${url}`,
+                  {
+                    link_preview_options: {
+                      is_disabled: true,
+                    },
+                  }
+                );
+              }
             }
           }
         } catch (error) {

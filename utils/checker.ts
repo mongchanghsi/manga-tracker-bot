@@ -29,7 +29,7 @@ export const checkIfUrlExist = async (url: string, chapter: number) => {
     return true;
   } catch (error) {
     console.log("Checking Url Error", error);
-    return false;
+    return 500;
   }
 };
 
