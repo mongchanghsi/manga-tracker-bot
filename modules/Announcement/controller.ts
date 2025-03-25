@@ -1,16 +1,11 @@
 import { Request, Response } from "express";
 import { sendAnnouncement, testAnnouncement } from "./service";
-import ENVIRONMENT from "../../configuration/environment";
 
 export const announce = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const { message, seed } = req.body;
-
-  if (seed !== ENVIRONMENT.SECRET_SEED) {
-    return res.status(403).json({ error: "Forbidden" });
-  }
+  const { message } = req.body;
 
   if (!message) {
     return res.status(400).json({ error: "Message is required" });
@@ -29,11 +24,7 @@ export const testAnnounce = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const { message, seed } = req.body;
-
-  if (seed !== ENVIRONMENT.SECRET_SEED) {
-    return res.status(403).json({ error: "Forbidden" });
-  }
+  const { message } = req.body;
 
   if (!message) {
     return res.status(400).json({ error: "Message is required" });
