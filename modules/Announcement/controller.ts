@@ -41,7 +41,7 @@ export const testAnnounce = async (
 
   try {
     await testAnnouncement(message);
-    return res.status(200).json({ success: "Announcement sent to all users." });
+    return res.status(200).json({ success: "Announcement sent" });
   } catch (error: unknown) {
     console.log(error);
     return res.status(500).json({ error: "Failed to send announcement." });

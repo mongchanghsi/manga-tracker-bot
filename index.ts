@@ -41,6 +41,12 @@ import announcementRoutes from "./modules/Announcement/routes";
 const app = express();
 app.use(bodyParser.json());
 
+app.get("/", (req, res) => {
+  res.send("Bot is healthy!");
+});
+
+app.use("/api/v1", announcementRoutes);
+
 bot.use(
   session({
     defaultSession: () => ({
@@ -103,6 +109,10 @@ const args = process.argv;
 if (args[args.length - 1] === "--local") {
   bot.launch();
   console.log("Bot started locally");
+
+  app.listen(PORT + 1, () => {
+    console.log(`Server is running on port ${PORT + 1}`);
+  });
 } else {
   bot
     .launch({ webhook: { domain: WEBHOOK_DOMAIN, port: PORT } })
@@ -110,9 +120,3 @@ if (args[args.length - 1] === "--local") {
   initCronJob(bot);
   initStayAlive();
 }
-
-app.get("/", (req, res) => {
-  res.send("Bot is healthy!");
-});
-
-app.use("/api/v1", announcementRoutes);

@@ -3,7 +3,7 @@ import { announce, testAnnounce } from "./controller";
 
 const router: Router = Router();
 
-router.post("/announce", announce);
-router.post("/test-announce", testAnnounce);
+router.post("/announcement", announce);
+router.post("/test-announcement", testAnnounce);
 
 export default router;
