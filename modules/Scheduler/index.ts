@@ -34,7 +34,7 @@ const ScheduleUpdateBookmarks = async (
     const users = await userDb.getAllUser();
 
     for (const _user of users) {
-      const bookmarks = await listDb.getBookmarks(_user.telegramId);
+      const bookmarks = await listDb.getAllBookmarks(_user.telegramId);
       for (const _bookmark of bookmarks) {
         try {
           if (

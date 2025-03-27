@@ -60,6 +60,30 @@ class ListDB {
     }
   }
 
+  async getAllBookmarks(userId: number): Promise<Bookmark[]> {
+    try {
+      const { data, error } = await this.client
+        .from(TABLE_NAME.LIST)
+        .select("*")
+        .eq("telegramId", userId)
+        .order("id", { ascending: true });
+
+      if (error) return [];
+      if (data.length > 0) {
+        return data.map((_data) => {
+          return {
+            ..._data,
+            url: _data.url.replace(CHAPTER_PLACEHOLDER, _data.latestChapter),
+          };
+        });
+      }
+      return [];
+    } catch (error) {
+      console.log("getBookmarks | Error - ", error);
+      return [];
+    }
+  }
+
   async getBookmarks(userId: number, page: number = 0): Promise<Bookmark[]> {
     try {
       const { data, error } = await this.client
