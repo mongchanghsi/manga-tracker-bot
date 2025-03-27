@@ -22,10 +22,7 @@ import { DEFAULT_ADD_SESSION } from "./modules/Bookmark/session";
 import { initCronJob } from "./modules/Scheduler";
 import express from "express";
 import { initStayAlive } from "./modules/Scheduler/stayAlive";
-import {
-  RefreshBookmarkCommand,
-  RefreshBookmarksAction,
-} from "./modules/Bookmark/refresh";
+import { RefreshBookmarkCommand } from "./modules/Bookmark/refresh";
 import { FeedbackCommand, FeedbackFollowup } from "./modules/common/feedback";
 import {
   AddCompletedCommand,
@@ -72,7 +69,7 @@ bot.command(COMMANDS.REMOVE, RemoveBookmarksCommand);
 bot.action(COMMANDS.REMOVE, RemoveBookmarksAction);
 
 bot.command(COMMANDS.REFRESH, RefreshBookmarkCommand);
-bot.action(COMMANDS.REFRESH, RefreshBookmarksAction);
+// bot.action(COMMANDS.REFRESH, RefreshBookmarksAction);
 
 bot.command(COMMANDS.FEEDBACK, FeedbackCommand);
 

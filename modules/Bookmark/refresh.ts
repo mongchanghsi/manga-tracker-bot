@@ -25,6 +25,7 @@ const getResponseStringBookmark = (bookmarks: Bookmark[], page: number = 0) => {
 export const RefreshBookmarkCommand = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap["text"]>
 ) => {
+  console.log("Refresh started");
   const userId = getUserId(ctx);
   const user = await userDb.getUser(userId);
   if (!user) {
@@ -34,7 +35,8 @@ export const RefreshBookmarkCommand = async (
 
   const bookmarks = await listDb.getAllBookmarks(userId);
   await CheckLatestChapter(bot, user.telegramId, bookmarks);
-  ctx.reply("Refresh completed");
+  console.log("Refresh ended");
+  ctx.sendMessage("Refresh completed");
 };
 
 export const RefreshBookmarksAction = async (
