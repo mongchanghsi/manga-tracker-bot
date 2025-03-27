@@ -27,6 +27,7 @@ export const GetBookmarksCommand = async (
   const user = await userDb.getUser(userId);
   if (!user) {
     await ctx.reply(NOT_REGISTERED);
+    return;
   }
 
   const bookmarks = await listDb.getBookmarks(userId);

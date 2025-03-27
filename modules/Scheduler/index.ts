@@ -5,6 +5,7 @@ import listDb from "../../database/List";
 import { BookmarkSessionContext } from "../Bookmark/session";
 import { CronJob } from "cron";
 import { checkIfUrlExist, isValidUrl } from "../../utils/checker";
+import { Bookmark } from "../../utils/types";
 
 const SCHEDUELD_TIME = "00 00 */6 * * *"; // Every 6 hours;
 
@@ -25,6 +26,60 @@ const getCurrentTime = (): string => {
   return `${day}/${month}/${year} ${_hours}:${minutes}${ampm}`;
 };
 
+export const CheckLatestChapter = async (
+  bot: Telegraf<BookmarkSessionContext<Update>>,
+  telegramId: string,
+  bookmarks: Bookmark[]
+) => {
+  for (const _bookmark of bookmarks) {
+    try {
+      if (
+        _bookmark.latestChapter === null ||
+        _bookmark.url === null ||
+        _bookmark.url.length === 0 ||
+        !isValidUrl(_bookmark.url)
+      )
+        continue; // Skips checking if latestChapter is null or not a valid url
+      const chapterToLookFor = _bookmark.latestChapter + 1;
+      const url = _bookmark.url.replace(
+        _bookmark.latestChapter.toString(),
+        chapterToLookFor.toString()
+      );
+      console.log(`Checking ${url}`);
+      const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
+      if (hasNextChapter === 500) {
+        console.log("🔴 There is an issue with this URL ", `- ${url}`);
+        bot.telegram.sendMessage(
+          telegramId,
+          `⚠️ ${_bookmark.name} - ${url} - There's is an issue with this URL which is preventing the bot from looking up the latest chapter. Advise to try another source!`
+        );
+      } else {
+        console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
+
+        if (hasNextChapter) {
+          const successUpdate = await listDb.updateBookmark(
+            _bookmark.id,
+            chapterToLookFor
+          );
+          if (successUpdate) {
+            bot.telegram.sendMessage(
+              telegramId,
+              `${_bookmark.name} has just released a new chapter! ${url}`,
+              {
+                link_preview_options: {
+                  is_disabled: true,
+                },
+              }
+            );
+          }
+        }
+      }
+    } catch (error) {
+      console.error(`Error processing bookmark ${_bookmark.id}:`, error);
+    }
+  }
+};
+
 const ScheduleUpdateBookmarks = async (
   bot: Telegraf<BookmarkSessionContext<Update>>
 ) => {
@@ -37,53 +92,7 @@ const ScheduleUpdateBookmarks = async (
 
     for (const _user of users) {
       const bookmarks = await listDb.getAllBookmarks(_user.telegramId);
-      for (const _bookmark of bookmarks) {
-        try {
-          if (
-            _bookmark.latestChapter === null ||
-            _bookmark.url === null ||
-            _bookmark.url.length === 0 ||
-            !isValidUrl(_bookmark.url)
-          )
-            continue; // Skips checking if latestChapter is null or not a valid url
-          const chapterToLookFor = _bookmark.latestChapter + 1;
-          const url = _bookmark.url.replace(
-            _bookmark.latestChapter.toString(),
-            chapterToLookFor.toString()
-          );
-          console.log(`Checking ${url}`);
-          const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
-          if (hasNextChapter === 500) {
-            console.log("🔴 There is an issue with this URL ", `- ${url}`);
-            bot.telegram.sendMessage(
-              _user.telegramId,
-              `⚠️ ${_bookmark.name} - ${url} - There's is an issue with this URL which is preventing the bot from looking up the latest chapter. Advise to try another source!`
-            );
-          } else {
-            console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
-
-            if (hasNextChapter) {
-              const successUpdate = await listDb.updateBookmark(
-                _bookmark.id,
-                chapterToLookFor
-              );
-              if (successUpdate) {
-                bot.telegram.sendMessage(
-                  _user.telegramId,
-                  `${_bookmark.name} has just released a new chapter! ${url}`,
-                  {
-                    link_preview_options: {
-                      is_disabled: true,
-                    },
-                  }
-                );
-              }
-            }
-          }
-        } catch (error) {
-          console.error(`Error processing bookmark ${_bookmark.id}:`, error);
-        }
-      }
+      await CheckLatestChapter(bot, _user.telegramId, bookmarks);
     }
   } catch (error) {
     console.error("Error scheduling updates:", error);

@@ -1,5 +1,5 @@
-import { NarrowedContext, Types } from "telegraf";
-import { getUserIdFromCallback } from "../../utils/telegramHelper";
+import { Context, NarrowedContext, Types } from "telegraf";
+import { getUserId, getUserIdFromCallback } from "../../utils/telegramHelper";
 import listDb, { PAGE_SIZE } from "../../database/List";
 import { BookmarkSessionContext } from "./session";
 import { Update } from "telegraf/types";
@@ -7,6 +7,10 @@ import { checkIfUrlExist } from "../../utils/checker";
 import { COMMANDS } from "../../utils/command";
 import { Bookmark } from "../../utils/types";
 import { DEFAULT_GET_INLINE_KEYBOARD_COMMANDS } from "../common/commands";
+import userDb from "../../database/User";
+import { NOT_REGISTERED } from "../../utils/messages";
+import { CheckLatestChapter } from "../Scheduler";
+import bot from "../common/init-bot";
 
 const getResponseStringBookmark = (bookmarks: Bookmark[], page: number = 0) => {
   const _list = bookmarks
@@ -16,6 +20,21 @@ const getResponseStringBookmark = (bookmarks: Bookmark[], page: number = 0) => {
     )
     .join(`\n`);
   return `Here's the refreshed list - Page ${page + 1}\n\n${_list}`;
+};
+
+export const RefreshBookmarkCommand = async (
+  ctx: NarrowedContext<Context<Update>, Types.MountMap["text"]>
+) => {
+  const userId = getUserId(ctx);
+  const user = await userDb.getUser(userId);
+  if (!user) {
+    await ctx.reply(NOT_REGISTERED);
+    return;
+  }
+
+  const bookmarks = await listDb.getAllBookmarks(userId);
+  await CheckLatestChapter(bot, user.telegramId, bookmarks);
+  ctx.reply("Refresh completed");
 };
 
 export const RefreshBookmarksAction = async (
