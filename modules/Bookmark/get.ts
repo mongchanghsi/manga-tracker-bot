@@ -6,15 +6,8 @@ import { COMMANDS } from "../../utils/command";
 import userDb from "../../database/User";
 import listDb, { PAGE_SIZE } from "../../database/List";
 import { BOOKMARK_NONE, NOT_REGISTERED } from "../../utils/messages";
-import { Bookmark, INLINE_KEYBOARD } from "../../utils/types";
-
-const DEFAULT_GET_INLINE_KEYBOARD_COMMANDS: INLINE_KEYBOARD = [
-  [
-    { text: "Add ➕", callback_data: COMMANDS.ADD },
-    { text: "Remove ❌", callback_data: COMMANDS.REMOVE },
-  ],
-  [{ text: "Refresh 🔄", callback_data: COMMANDS.REFRESH }],
-];
+import { Bookmark } from "../../utils/types";
+import { DEFAULT_GET_INLINE_KEYBOARD_COMMANDS } from "../common/commands";
 
 const getResponseStringBookmark = (bookmarks: Bookmark[], page: number = 0) => {
   const _list = bookmarks
