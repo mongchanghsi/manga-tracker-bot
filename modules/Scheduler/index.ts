@@ -28,7 +28,9 @@ const getCurrentTime = (): string => {
 const ScheduleUpdateBookmarks = async (
   bot: Telegraf<BookmarkSessionContext<Update>>
 ) => {
-  console.log(`Checking for new chapters @ ${getCurrentTime()}`);
+  console.log(
+    `Scheduler Start Checks for All Registered Links @ ${getCurrentTime()}`
+  );
 
   try {
     const users = await userDb.getAllUser();
@@ -85,6 +87,10 @@ const ScheduleUpdateBookmarks = async (
     }
   } catch (error) {
     console.error("Error scheduling updates:", error);
+  } finally {
+    console.log(
+      `Scheduler Ends Checks for All Registered Links @ ${getCurrentTime()}`
+    );
   }
 };
 
