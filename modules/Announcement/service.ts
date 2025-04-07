@@ -24,3 +24,19 @@ export const testAnnouncement = async (message: string) => {
     console.log("Error sending test announcement:", error);
   }
 };
+
+export const sendDirectMessage = async (
+  telegramIds: string[],
+  message: string
+) => {
+  try {
+    for (const userId of telegramIds) {
+      const user = await userDb.getUser(+userId);
+      if (user) {
+        await bot.telegram.sendMessage(userId, message);
+      }
+    }
+  } catch (error) {
+    console.log("Error sending direct message", error);
+  }
+};
