@@ -1,3 +1,6 @@
+import { EventEmitter } from "events";
+EventEmitter.defaultMaxListeners = 100;
+
 import { Telegraf } from "telegraf";
 import { Update } from "telegraf/types";
 import userDb from "../../database/User";
