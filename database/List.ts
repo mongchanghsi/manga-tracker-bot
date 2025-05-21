@@ -2,6 +2,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { TABLE_NAME } from "./table_name";
 import getSupabaseClient from "./client";
 import { Bookmark } from "../utils/types";
+import { generateTimestamp } from "../utils/date";
 
 const CHAPTER_PLACEHOLDER = `{chapter-placeholder}`;
 export const PAGE_SIZE = 20;
@@ -128,7 +129,7 @@ class ListDB {
     try {
       const { error } = await this.client
         .from(TABLE_NAME.LIST)
-        .update({ latestChapter: chapter })
+        .update({ latestChapter: chapter, updated_at: generateTimestamp() })
         .eq("id", bookmarkId);
       if (error) return false;
       return true;
