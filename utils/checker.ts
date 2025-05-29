@@ -1,3 +1,5 @@
+import { JSDOM } from "jsdom";
+
 type ValidationRule = {
   name: string;
   validate: (input: string) => boolean;
@@ -96,7 +98,15 @@ export const checkIfUrlExistV2 = async (url: string, chapter: number) => {
     if (!response.ok) return [`Site faced with ${response.status}`];
 
     const data = await response.text();
-    const _data = data.toLowerCase();
+
+    // Remove head tag - sometimes meta tag contain alot of useless information causing problem with validator
+    const dom = new JSDOM(data);
+    const document = dom.window.document;
+    const head = document.querySelector("head");
+    if (head) head.remove();
+    const cleanedHTML = dom.serialize();
+
+    const _data = cleanedHTML.toLowerCase();
 
     return rules
       .filter((rule) => !rule.validate(_data))
