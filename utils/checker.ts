@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { JSDOM, VirtualConsole } from "jsdom";
 
 type ValidationRule = {
   name: string;
@@ -100,10 +100,13 @@ export const checkIfUrlExistV2 = async (url: string, chapter: number) => {
     const data = await response.text();
 
     // Remove head tag - sometimes meta tag contain alot of useless information causing problem with validator
-    const dom = new JSDOM(data);
+    const virtualConsole = new VirtualConsole();
+    virtualConsole.on("error", () => {}); // suppress stylesheet parse errors
+    const dom = new JSDOM(data, { virtualConsole });
     const document = dom.window.document;
     const head = document.querySelector("head");
     if (head) head.remove();
+    document.querySelectorAll("style, link").forEach((el) => el.remove());
     const cleanedHTML = dom.serialize();
 
     const _data = cleanedHTML.toLowerCase();
