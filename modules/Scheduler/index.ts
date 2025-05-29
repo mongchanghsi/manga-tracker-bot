@@ -76,7 +76,7 @@ export const CheckLatestChapter = async (
             );
           }
         } else {
-          console.log(validation.join("|"));
+          console.log(validation.join(" | "));
         }
       }
     } catch (error) {
