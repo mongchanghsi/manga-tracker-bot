@@ -3,7 +3,7 @@ import { getUserId, getUserIdFromCallback } from "../../utils/telegramHelper";
 import listDb, { PAGE_SIZE } from "../../database/List";
 import { BookmarkSessionContext } from "./session";
 import { Update } from "telegraf/types";
-import { checkIfUrlExist } from "../../utils/checker";
+import { checkIfUrlExistV2 } from "../../utils/checker";
 import { COMMANDS } from "../../utils/command";
 import { Bookmark } from "../../utils/types";
 import { DEFAULT_GET_INLINE_KEYBOARD_COMMANDS } from "../common/commands";
@@ -60,11 +60,16 @@ export const RefreshBookmarksAction = async (
       chapterToLookFor.toString()
     );
     console.log(`Checking ${url}`);
-    const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
-    console.log(hasNextChapter ? "🟢" : `🔴`, `- ${url}`);
-
-    if (hasNextChapter !== 500 && hasNextChapter) {
-      await listDb.updateBookmark(_bookmark.id, chapterToLookFor);
+    const validation = await checkIfUrlExistV2(url, chapterToLookFor);
+    if (validation === 500) {
+      console.log("🔴 There is an issue with this URL ", `- ${url}`);
+    } else {
+      console.log(validation ? "🟢" : `🔴`, `- ${url}`);
+      if (validation.length > 0) {
+        console.log(validation.join("|"));
+      } else {
+        await listDb.updateBookmark(_bookmark.id, chapterToLookFor);
+      }
     }
   }
 

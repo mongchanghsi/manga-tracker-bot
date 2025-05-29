@@ -1,3 +1,112 @@
+type ValidationRule = {
+  name: string;
+  validate: (input: string) => boolean;
+  errorMessage: string;
+};
+
+const makeRule = (
+  name: string,
+  test: (input: string) => boolean,
+  message?: string
+): ValidationRule => {
+  return {
+    name,
+    validate: test,
+    errorMessage: message ?? `${name} rule failed.`,
+  };
+};
+
+const getRules = (chapter: number): ValidationRule[] => [
+  makeRule(
+    "notFound",
+    (input) => !input.includes("not found"),
+    `"not found" found in data.`
+  ),
+  makeRule(
+    "oopsPage",
+    (input) => !input.includes("Oops! That page can’t be found"),
+    `"Oops!..." found.`
+  ),
+  makeRule(
+    "notAvailable",
+    (input) => !input.includes("not available"),
+    `"not available" found.`
+  ),
+  makeRule(
+    "comingSoon",
+    (input) => !input.includes("coming soon"),
+    `"coming soon" found.`
+  ),
+  makeRule(
+    "stayTuned",
+    (input) => !input.includes("stay tuned"),
+    `"stay tuned" found.`
+  ),
+  makeRule(
+    "readChainsaw",
+    (input) => !input.includes("Please don’t wait for the Official website"),
+    `Placeholder found (Chainsaw Man).`
+  ),
+  makeRule(
+    "comingSoonNoSpace",
+    (input) => !input.replace(/\s+/g, "").includes("comingsoon"),
+    `"comingsoon" (no spaces) found.`
+  ),
+  makeRule(
+    "chapterPresent",
+    (input) => input.includes(`chapter ${chapter}`),
+    `Missing "chapter ${chapter}".`
+  ),
+  makeRule(
+    "releaseCountdown",
+    (input) => !input.includes("a few moments separate us from the release of"),
+    `Countdown text found.`
+  ),
+  makeRule(
+    "officialWait",
+    (input) => !input.includes("Don’t wait for the official website"),
+    `Official wait message found.`
+  ),
+  makeRule(
+    "placeholder",
+    (input) => !input.includes("This is a placeholder"),
+    `Placeholder detected.`
+  ),
+  makeRule(
+    "infoNbsp",
+    (input) => !input.includes("Info &nbsp"),
+    `Info &nbsp found.`
+  ),
+  makeRule(
+    "newChapterSoon",
+    (input) => !input.includes("The new chapter will be available soon"),
+    `Future chapter placeholder found.`
+  ),
+  makeRule(
+    "countdown",
+    (input) => !input.includes("countdown"),
+    `"countdown" found.`
+  ),
+];
+
+export const checkIfUrlExistV2 = async (url: string, chapter: number) => {
+  try {
+    const rules = getRules(chapter);
+    const response = await fetch(url);
+    if (!response.ok) return [`Site faced with ${response.status}`];
+
+    const data = await response.text();
+    const _data = data.toLowerCase();
+
+    return rules
+      .filter((rule) => !rule.validate(_data))
+      .map((rule) => rule.errorMessage);
+  } catch (error) {
+    console.log("Checking Url Error", error);
+    return 500;
+  }
+};
+
 export const checkIfUrlExist = async (url: string, chapter: number) => {
   try {
     const response = await fetch(url);

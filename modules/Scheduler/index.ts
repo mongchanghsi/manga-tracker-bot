@@ -7,7 +7,7 @@ import userDb from "../../database/User";
 import listDb from "../../database/List";
 import { BookmarkSessionContext } from "../Bookmark/session";
 import { CronJob } from "cron";
-import { checkIfUrlExist, isValidUrl } from "../../utils/checker";
+import { checkIfUrlExistV2, isValidUrl } from "../../utils/checker";
 import { Bookmark } from "../../utils/types";
 
 const SCHEDUELD_TIME = "00 00 */6 * * *"; // Every 6 hours;
@@ -49,17 +49,17 @@ export const CheckLatestChapter = async (
         chapterToLookFor.toString()
       );
       console.log(`Checking ${url}`);
-      const hasNextChapter = await checkIfUrlExist(url, chapterToLookFor);
-      if (hasNextChapter === 500) {
+      const validation = await checkIfUrlExistV2(url, chapterToLookFor);
+      if (validation === 500) {
         console.log("🔴 There is an issue with this URL ", `- ${url}`);
         bot.telegram.sendMessage(
           telegramId,
           `⚠️ ${_bookmark.name} - ${url} - There's is an issue with this URL which is preventing the bot from looking up the latest chapter. Advise to try another source!`
         );
       } else {
-        console.log(hasNextChapter ? "🟢" : "🔴", `- ${url}`);
+        console.log(validation.length === 0 ? "🟢" : "🔴", `- ${url}`);
 
-        if (hasNextChapter) {
+        if (validation.length === 0) {
           const successUpdate = await listDb.updateBookmark(
             _bookmark.id,
             chapterToLookFor
@@ -75,6 +75,8 @@ export const CheckLatestChapter = async (
               }
             );
           }
+        } else {
+          console.log(validation.join("|"));
         }
       }
     } catch (error) {
