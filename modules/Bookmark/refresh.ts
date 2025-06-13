@@ -12,6 +12,8 @@ import { NOT_REGISTERED } from "../../utils/messages";
 import { CheckLatestChapter } from "../Scheduler";
 import bot from "../common/init-bot";
 
+const refreshLocks = new Map<number, boolean>();
+
 const getResponseStringBookmark = (bookmarks: Bookmark[], page: number = 0) => {
   const _list = bookmarks
     .map(
@@ -25,18 +27,32 @@ const getResponseStringBookmark = (bookmarks: Bookmark[], page: number = 0) => {
 export const RefreshBookmarkCommand = async (
   ctx: NarrowedContext<Context<Update>, Types.MountMap["text"]>
 ) => {
-  console.log("Refresh started");
+  if (ctx.message.from.is_bot) return;
+
   const userId = getUserId(ctx);
-  const user = await userDb.getUser(userId);
-  if (!user) {
-    await ctx.reply(NOT_REGISTERED);
+
+  if (refreshLocks.get(userId)) {
+    await ctx.reply("Refresh is already in progress.");
     return;
   }
+  refreshLocks.set(userId, true);
+  try {
+    console.log("Refresh started");
+    ctx.sendMessage("Refreshing...");
 
-  const bookmarks = await listDb.getAllBookmarks(userId);
-  await CheckLatestChapter(bot, user.telegramId, bookmarks);
-  console.log("Refresh ended");
-  ctx.sendMessage("Refresh completed");
+    const user = await userDb.getUser(userId);
+    if (!user) {
+      await ctx.reply(NOT_REGISTERED);
+      return;
+    }
+
+    const bookmarks = await listDb.getAllBookmarks(userId);
+    await CheckLatestChapter(bot, user.telegramId, bookmarks);
+    console.log("Refresh ended");
+    ctx.sendMessage("Refresh completed");
+  } finally {
+    refreshLocks.delete(userId);
+  }
 };
 
 export const RefreshBookmarksAction = async (
