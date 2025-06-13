@@ -32,13 +32,14 @@ export const RefreshBookmarkCommand = async (
   const userId = getUserId(ctx);
 
   if (refreshLocks.get(userId)) {
-    await ctx.reply("Refresh is already in progress.");
+    // ctx.sendMessage("Refresh is already in progress.");
     return;
   }
   refreshLocks.set(userId, true);
+
   try {
     console.log("Refresh started");
-    ctx.sendMessage("Refreshing...");
+    ctx.sendMessage("Refreshing started");
 
     const user = await userDb.getUser(userId);
     if (!user) {
