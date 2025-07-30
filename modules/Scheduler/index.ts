@@ -10,7 +10,8 @@ import { CronJob } from "cron";
 import { checkIfUrlExistV2, isValidUrl } from "../../utils/checker";
 import { Bookmark } from "../../utils/types";
 
-const SCHEDUELD_TIME = "00 00 */6 * * *"; // Every 6 hours;
+// const SCHEDULED_TIME = "00 00 */6 * * *"; // Every 6 hours;
+const SCHEDULED_TIME = "00 00 * * * *"; // Every 24 hours
 
 const getCurrentTime = (): string => {
   const _date = new Date();
@@ -110,7 +111,7 @@ const ScheduleUpdateBookmarks = async (
 
 export const initCronJob = (bot: Telegraf<BookmarkSessionContext<Update>>) => {
   new CronJob(
-    SCHEDUELD_TIME, // cronTime
+    SCHEDULED_TIME, // cronTime
     () => ScheduleUpdateBookmarks(bot),
     null,
     true,
