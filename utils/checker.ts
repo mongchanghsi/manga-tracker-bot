@@ -107,6 +107,12 @@ export const checkIfUrlExistV2 = async (url: string, chapter: number) => {
     const response = await fetch(url, {
       headers: {
         "User-Agent": getRandomUserAgent(),
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        Connection: "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
       },
     });
     if (!response.ok) return [`Site faced with ${response.status}`];
