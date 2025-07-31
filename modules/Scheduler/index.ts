@@ -11,7 +11,7 @@ import { checkIfUrlExistV2, isValidUrl } from "../../utils/checker";
 import { Bookmark } from "../../utils/types";
 
 // const SCHEDULED_TIME = "00 00 */6 * * *"; // Every 6 hours;
-const SCHEDULED_TIME = "00 00 * * * *"; // Every 24 hours
+const SCHEDULED_TIME = "00 00 */24 * * *"; // Every 24 hours
 
 const getCurrentTime = (): string => {
   const _date = new Date();
