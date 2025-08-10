@@ -51,12 +51,14 @@ export const CheckLatestChapter = async (
       );
       console.log(`Checking ${url}`);
       const validation = await checkIfUrlExistV2(url, chapterToLookFor);
-      if (validation === 500) {
+      if (typeof validation === "number" && [403, 500].includes(validation)) {
         console.log("🔴 There is an issue with this URL ", `- ${url}`);
         bot.telegram.sendMessage(
           telegramId,
           `⚠️ ${_bookmark.name} - ${url} - There's is an issue with this URL which is preventing the bot from looking up the latest chapter. Advise to try another source!`
         );
+      } else if (typeof validation === "number") {
+        console.log("Unaccounted for validation number", validation);
       } else {
         console.log(validation.length === 0 ? "🟢" : "🔴", `- ${url}`);
 

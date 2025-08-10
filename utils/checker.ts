@@ -142,7 +142,8 @@ export const checkIfUrlExistV2 = async (url: string, chapter: number) => {
         // "If-Modified-Since": "Thu, 31 Jul 2025 00:07:42 GMT",
       },
     });
-    if (!response.ok) return [`Site faced with ${response.status}`];
+    // if (!response.ok) return [`Site faced with ${response.status}`];
+    if (!response.ok) return response.status;
 
     const data = await response.text();
 
