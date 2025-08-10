@@ -78,7 +78,7 @@ export const RefreshBookmarksAction = async (
     );
     console.log(`Checking ${url}`);
     const validation = await checkIfUrlExistV2(url, chapterToLookFor);
-    if (typeof validation === "number" && [403, 500].includes(validation)) {
+    if (typeof validation === "number" && [500].includes(validation)) {
       console.log("🔴 There is an issue with this URL ", `- ${url}`);
     } else if (typeof validation === "number") {
       console.log("Unaccounted for validation number", validation);

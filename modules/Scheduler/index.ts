@@ -51,7 +51,7 @@ export const CheckLatestChapter = async (
       );
       console.log(`Checking ${url}`);
       const validation = await checkIfUrlExistV2(url, chapterToLookFor);
-      if (typeof validation === "number" && [403, 500].includes(validation)) {
+      if (typeof validation === "number" && [500].includes(validation)) {
         console.log("🔴 There is an issue with this URL ", `- ${url}`);
         bot.telegram.sendMessage(
           telegramId,
