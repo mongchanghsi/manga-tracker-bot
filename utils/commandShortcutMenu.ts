@@ -7,6 +7,10 @@ const CommandList: BotCommand[] = [
     description: "Start the bot",
   },
   {
+    command: COMMANDS.TOGGLE_NOTIFICATION,
+    description: "Allow bot to send you notification on new manga chapter",
+  },
+  {
     command: COMMANDS.LIST,
     description: "Get current bookmarked list",
   },

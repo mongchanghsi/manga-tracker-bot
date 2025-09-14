@@ -7,8 +7,7 @@ import userDb from "../../database/User";
 import listDb from "../../database/List";
 import { BookmarkSessionContext } from "../Bookmark/session";
 import { CronJob } from "cron";
-import { checkIfUrlExistV2, isValidUrl } from "../../utils/checker";
-import { Bookmark } from "../../utils/types";
+import { CheckMultiAndUpdateAndSend } from "../../utils/checkAndSend";
 
 // const SCHEDULED_TIME = "00 00 */6 * * *"; // Every 6 hours;
 const SCHEDULED_TIME = "00 00 */24 * * *"; // Every 24 hours
@@ -30,64 +29,6 @@ const getCurrentTime = (): string => {
   return `${day}/${month}/${year} ${_hours}:${minutes}${ampm}`;
 };
 
-export const CheckLatestChapter = async (
-  bot: Telegraf<BookmarkSessionContext<Update>>,
-  telegramId: string,
-  bookmarks: Bookmark[]
-) => {
-  for (const _bookmark of bookmarks) {
-    try {
-      if (
-        _bookmark.latestChapter === null ||
-        _bookmark.url === null ||
-        _bookmark.url.length === 0 ||
-        !isValidUrl(_bookmark.url)
-      )
-        continue; // Skips checking if latestChapter is null or not a valid url
-      const chapterToLookFor = _bookmark.latestChapter + 1;
-      const url = _bookmark.url.replace(
-        _bookmark.latestChapter.toString(),
-        chapterToLookFor.toString()
-      );
-      console.log(`Checking ${url}`);
-      const validation = await checkIfUrlExistV2(url, chapterToLookFor);
-      if (typeof validation === "number" && [500].includes(validation)) {
-        console.log("🔴 There is an issue with this URL ", `- ${url}`);
-        bot.telegram.sendMessage(
-          telegramId,
-          `⚠️ ${_bookmark.name} - ${url} - There's is an issue with this URL which is preventing the bot from looking up the latest chapter. Advise to try another source!`
-        );
-      } else if (typeof validation === "number") {
-        console.log("Unaccounted for validation number", validation);
-      } else {
-        console.log(validation.length === 0 ? "🟢" : "🔴", `- ${url}`);
-
-        if (validation.length === 0) {
-          const successUpdate = await listDb.updateBookmark(
-            _bookmark.id,
-            chapterToLookFor
-          );
-          if (successUpdate) {
-            bot.telegram.sendMessage(
-              telegramId,
-              `${_bookmark.name} has just released a new chapter! ${url}`,
-              {
-                link_preview_options: {
-                  is_disabled: true,
-                },
-              }
-            );
-          }
-        } else {
-          console.log(validation.join(" | "));
-        }
-      }
-    } catch (error) {
-      console.error(`Error processing bookmark ${_bookmark.id}:`, error);
-    }
-  }
-};
-
 const ScheduleUpdateBookmarks = async (
   bot: Telegraf<BookmarkSessionContext<Update>>
 ) => {
@@ -100,7 +41,9 @@ const ScheduleUpdateBookmarks = async (
 
     for (const _user of users) {
       const bookmarks = await listDb.getAllBookmarks(_user.telegramId);
-      await CheckLatestChapter(bot, _user.telegramId, bookmarks);
+      await CheckMultiAndUpdateAndSend(bot, _user, bookmarks);
+
+      await new Promise((res) => setTimeout(res, 500));
     }
   } catch (error) {
     console.error("Error scheduling updates:", error);

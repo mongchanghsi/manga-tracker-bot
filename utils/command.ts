@@ -11,4 +11,5 @@ export enum COMMANDS {
   GET_COMPLETED = "get_completed",
   REMOVE_COMPLETED = "remove_completed",
   RECOMMEND = "recommend",
+  TOGGLE_NOTIFICATION = "toggle_notification",
 }

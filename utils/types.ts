@@ -10,4 +10,17 @@ export type Bookmark = {
   name: string;
   latestChapter: number;
   url: string;
+  source: SOURCE;
+};
+
+export enum SOURCE {
+  MANGADEX = "MangaDEX",
+  COMICK = "Comick.io",
+  OTHERS = "Others",
+}
+
+export type User = {
+  id: number;
+  telegramId: number;
+  is_on: boolean;
 };

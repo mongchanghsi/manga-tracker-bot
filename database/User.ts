@@ -1,6 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { TABLE_NAME } from "./table_name";
 import getSupabaseClient from "./client";
+import { User } from "../utils/types";
 
 class UserDB {
   client: SupabaseClient;
@@ -22,7 +23,7 @@ class UserDB {
     }
   }
 
-  async getUser(userId: number) {
+  async getUser(userId: number): Promise<User | null> {
     try {
       const { data, error } = await this.client
         .from(TABLE_NAME.USER)
@@ -37,7 +38,7 @@ class UserDB {
     }
   }
 
-  async getAllUser() {
+  async getAllUser(): Promise<User[]> {
     try {
       const { data, error } = await this.client
         .from(TABLE_NAME.USER)
@@ -48,6 +49,20 @@ class UserDB {
     } catch (error) {
       console.log("getAllUser | Error - ", error);
       return [];
+    }
+  }
+
+  async toggleUserNotification(user: User) {
+    try {
+      const { error } = await this.client
+        .from(TABLE_NAME.USER)
+        .update({ is_on: !user.is_on })
+        .eq("telegramId", user.telegramId);
+      if (error) return false;
+      return true;
+    } catch (error) {
+      console.log("toggleUserNotification | Error - ", error);
+      return false;
     }
   }
 }

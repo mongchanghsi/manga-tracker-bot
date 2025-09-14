@@ -3,14 +3,16 @@ import { getUserId, getUserIdFromCallback } from "../../utils/telegramHelper";
 import listDb, { PAGE_SIZE } from "../../database/List";
 import { BookmarkSessionContext } from "./session";
 import { Update } from "telegraf/types";
-import { checkIfUrlExistV2 } from "../../utils/checker";
 import { COMMANDS } from "../../utils/command";
 import { Bookmark } from "../../utils/types";
 import { DEFAULT_GET_INLINE_KEYBOARD_COMMANDS } from "../common/commands";
 import userDb from "../../database/User";
 import { NOT_REGISTERED } from "../../utils/messages";
-import { CheckLatestChapter } from "../Scheduler";
 import bot from "../common/init-bot";
+import {
+  CheckMultiAndUpdate,
+  CheckMultiAndUpdateAndSend,
+} from "../../utils/checkAndSend";
 
 const refreshLocks = new Map<number, boolean>();
 
@@ -32,26 +34,45 @@ export const RefreshBookmarkCommand = async (
   const userId = getUserId(ctx);
 
   if (refreshLocks.get(userId)) {
-    // ctx.sendMessage("Refresh is already in progress.");
     return;
   }
   refreshLocks.set(userId, true);
 
   try {
     console.log("Refresh started");
-    ctx.sendMessage("Refreshing started");
 
-    const user = await userDb.getUser(userId);
-    if (!user) {
-      await ctx.reply(NOT_REGISTERED);
-      return;
-    }
+    // ✅ Immediately respond
+    await ctx.reply("🔄 Refreshing bookmarks in the background...");
 
-    const bookmarks = await listDb.getAllBookmarks(userId);
-    await CheckLatestChapter(bot, user.telegramId, bookmarks);
-    console.log("Refresh ended");
-    ctx.sendMessage("Refresh completed");
-  } finally {
+    // Do not block — offload the heavy operation
+    setTimeout(async () => {
+      try {
+        const user = await userDb.getUser(userId);
+        if (!user) {
+          await ctx.reply(NOT_REGISTERED);
+          return;
+        }
+
+        const bookmarks = await listDb.getAllBookmarks(userId);
+        await CheckMultiAndUpdateAndSend(bot, user, bookmarks);
+
+        console.log("Refresh ended");
+        await bot.telegram.sendMessage(
+          user.telegramId,
+          "✅ Refresh completed."
+        );
+      } catch (err) {
+        console.error("Refresh error:", err);
+        await bot.telegram.sendMessage(
+          userId,
+          "❌ Refresh failed due to an error."
+        );
+      } finally {
+        refreshLocks.delete(userId);
+      }
+    }, 0); // Offload to next tick
+  } catch (err) {
+    console.error("Top-level refresh error:", err);
     refreshLocks.delete(userId);
   }
 };
@@ -69,28 +90,7 @@ export const RefreshBookmarksAction = async (
   const bookmarks = await listDb.getAllBookmarks(userId);
 
   await ctx.editMessageText("Refreshing...");
-
-  for (const _bookmark of bookmarks) {
-    const chapterToLookFor = _bookmark.latestChapter + 1;
-    const url = _bookmark.url.replace(
-      _bookmark.latestChapter.toString(),
-      chapterToLookFor.toString()
-    );
-    console.log(`Checking ${url}`);
-    const validation = await checkIfUrlExistV2(url, chapterToLookFor);
-    if (typeof validation === "number" && [500].includes(validation)) {
-      console.log("🔴 There is an issue with this URL ", `- ${url}`);
-    } else if (typeof validation === "number") {
-      console.log("Unaccounted for validation number", validation);
-    } else {
-      console.log(validation ? "🟢" : `🔴`, `- ${url}`);
-      if (validation.length > 0) {
-        console.log(validation.join("|"));
-      } else {
-        await listDb.updateBookmark(_bookmark.id, chapterToLookFor);
-      }
-    }
-  }
+  await CheckMultiAndUpdate(bookmarks);
 
   const refreshedBookmarks = await listDb.getBookmarks(userId);
 

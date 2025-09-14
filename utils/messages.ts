@@ -3,10 +3,17 @@ export const NOT_REGISTERED =
 
 export const BOOKMARK_NONE =
   "You don't have any bookmarked manga! Add one to get started";
-export const BOOKMARK_ADD_RESPONSE_1 = "What is the name?";
-export const BOOKMARK_ADD_RESPONSE_2 =
+export const BOOKMARK_ADD_ASK_NAME = "What is the name?";
+export const BOOKMARK_ADD_ASK_SOURCE =
+  "What is the source? MangaDEX/Comick/Others";
+export const BOOKMARK_ADD_MANGADEX =
+  "What is the MangaDEX URL (e.g. https://mangadex.org/title/a1c7c817-4e59-43b7-9365-09675a149a6f/one-piece)";
+export const BOOKMARK_ADD_COMICK =
+  "What is the Comick URL (e.g. https://comick.io/comic/02-one-piece)";
+export const BOOKMARK_ADD_ASK_URL_NO_CHAPTER = "What is the URL";
+export const BOOKMARK_ADD_ASK_URL_WITH_CHAPTER =
   "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number. Recommended mangafire/kingofshojo/manhuaus)";
-export const BOOKMARK_ADD_RESPONSE_3 = "What is latest chapter for this URL";
+export const BOOKMARK_ADD_ASK_CHAPTER = "What is latest chapter for this URL";
 export const BOOKMARK_ADD_SUCCESS = "Added to your bookmarks!";
 
 export const BOOKMARK_REMOVE_RESPONSE_1 =

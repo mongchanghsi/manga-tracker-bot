@@ -18,7 +18,7 @@ import {
   RemoveBookmarksCommand,
   RemoveBookmarksFollowup,
 } from "./modules/Bookmark/delete";
-import { DEFAULT_ADD_SESSION } from "./modules/Bookmark/session";
+import { DEFAULT_ADD_SESSION, STEP } from "./modules/Bookmark/session";
 import { initCronJob } from "./modules/Scheduler";
 import express from "express";
 import { initStayAlive } from "./modules/Scheduler/stayAlive";
@@ -37,6 +37,14 @@ import { RecommendCommand } from "./modules/common/recommend";
 import bot from "./modules/common/init-bot";
 import bodyParser from "body-parser";
 import announcementRoutes from "./modules/Announcement/routes";
+import localTestRoutes from "./modules/LocalTest/routes";
+import { SOURCE } from "./utils/types";
+import {
+  BOOKMARK_ADD_ASK_URL_WITH_CHAPTER,
+  BOOKMARK_ADD_COMICK,
+  BOOKMARK_ADD_MANGADEX,
+} from "./utils/messages";
+import { ToggleNotificationCommand } from "./modules/common/notification";
 
 const app = express();
 app.use(bodyParser.json());
@@ -46,6 +54,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1", announcementRoutes);
+app.use("/api/v1", localTestRoutes);
 
 bot.use(
   session({
@@ -82,21 +91,45 @@ bot.command(COMMANDS.REMOVE_COMPLETED, RemoveCompletedCommand);
 
 bot.command(COMMANDS.RECOMMEND, RecommendCommand);
 
+bot.command(COMMANDS.TOGGLE_NOTIFICATION, ToggleNotificationCommand);
+
 bot.on("text", (ctx) => {
-  if (ctx.session.command === COMMANDS.ADD) {
+  const command = ctx.session.command;
+  if (command === COMMANDS.ADD) {
     AddBookmarksFollowup(ctx);
   }
-  if (ctx.session.command === COMMANDS.REMOVE) {
+  if (command === COMMANDS.REMOVE) {
     RemoveBookmarksFollowup(ctx);
   }
-  if (ctx.session.command === COMMANDS.FEEDBACK) {
+  if (command === COMMANDS.FEEDBACK) {
     FeedbackFollowup(ctx);
   }
-  if (ctx.session.command === COMMANDS.ADD_COMPLETED) {
+  if (command === COMMANDS.ADD_COMPLETED) {
     AddCompletedFollowup(ctx);
   }
-  if (ctx.session.command === COMMANDS.REMOVE_COMPLETED) {
+  if (command === COMMANDS.REMOVE_COMPLETED) {
     RemoveCompletedFollowup(ctx);
+  }
+});
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+bot.on("callback_query", async (ctx: any) => {
+  const data = ctx.callbackQuery.data;
+
+  await ctx.answerCbQuery();
+
+  if (ctx.session.add.step === STEP.SOURCE) {
+    ctx.session.add.source = data;
+    ctx.session.add.step = STEP.URL;
+    let response;
+    if (data === SOURCE.MANGADEX) {
+      response = BOOKMARK_ADD_MANGADEX;
+    } else if (data === SOURCE.COMICK) {
+      response = BOOKMARK_ADD_COMICK;
+    } else {
+      response = BOOKMARK_ADD_ASK_URL_WITH_CHAPTER;
+    }
+    await ctx.reply(response);
   }
 });
 
