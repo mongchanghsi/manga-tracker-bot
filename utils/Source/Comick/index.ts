@@ -1,7 +1,10 @@
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
 import BaseSource from "..";
 import { JSDOM, VirtualConsole } from "jsdom";
 import { ComickPropsResponse } from "./types";
+import ENVIRONMENT from "../../../configuration/environment";
+
+const BROWSERLESS_WS = `wss://chrome.browserless.io?token=${ENVIRONMENT.BROWERLESS_TOKEN}`;
 
 class ComickSource extends BaseSource {
   isValidUrl(url: string) {
@@ -9,19 +12,25 @@ class ComickSource extends BaseSource {
   }
 
   async getLatestChapter(url: string) {
+    let browser;
+    let page;
+
     try {
-      const browser = await puppeteer.launch({ headless: true });
-      const page = await browser.newPage();
+      browser = await puppeteer.connect({
+        browserWSEndpoint: BROWSERLESS_WS,
+      });
+      page = await browser.newPage();
 
       await page.setUserAgent(
         "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
       );
 
-      await page.goto(url, { waitUntil: "networkidle2" });
+      await page.goto(url, {
+        waitUntil: "networkidle2",
+        timeout: 15_000, // 15 seconds timeout
+      });
 
       const content = await page.content();
-
-      await browser.close();
 
       const virtualConsole = new VirtualConsole();
       virtualConsole.on("error", () => {});
@@ -62,6 +71,9 @@ class ComickSource extends BaseSource {
         viewer: "",
         errors: [],
       };
+    } finally {
+      if (page) await page.close();
+      if (browser) await browser.disconnect();
     }
   }
 }

@@ -21,6 +21,16 @@ export const CheckOnly = async (bookmark: Bookmark) => {
     errors: [],
   };
 
+  console.log(
+    "Checking - ",
+    bookmark.name,
+    " | ",
+    bookmark.url.replace(
+      bookmark.latestChapter.toString(),
+      (bookmark.latestChapter + 1).toString()
+    )
+  );
+
   switch (bookmark.source) {
     case SOURCE.MANGADEX: {
       const source = new MangaDEXSource();
