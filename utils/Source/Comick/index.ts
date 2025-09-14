@@ -4,7 +4,7 @@ import { JSDOM, VirtualConsole } from "jsdom";
 import { ComickPropsResponse } from "./types";
 import ENVIRONMENT from "../../../configuration/environment";
 
-const BROWSERLESS_WS = `wss://chrome.browserless.io?token=${ENVIRONMENT.BROWERLESS_TOKEN}`;
+const BROWSERLESS_WS = `wss://production-sfo.browserless.io?token=${ENVIRONMENT.BROWERLESS_TOKEN}`;
 
 class ComickSource extends BaseSource {
   isValidUrl(url: string) {
