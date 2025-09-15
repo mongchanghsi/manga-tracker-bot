@@ -12,7 +12,7 @@ export const BOOKMARK_ADD_COMICK =
   "What is the Comick URL (e.g. https://comick.io/comic/02-one-piece)";
 export const BOOKMARK_ADD_ASK_URL_NO_CHAPTER = "What is the URL";
 export const BOOKMARK_ADD_ASK_URL_WITH_CHAPTER =
-  "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number. Recommended mangafire/kingofshojo/manhuaus)";
+  "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number. Recommended mangakakalot)";
 export const BOOKMARK_ADD_ASK_CHAPTER = "What is latest chapter for this URL";
 export const BOOKMARK_ADD_SUCCESS = "Added to your bookmarks!";
 

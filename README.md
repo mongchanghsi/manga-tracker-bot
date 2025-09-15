@@ -14,7 +14,11 @@ As a manga reader, I often struggle with knowing when new chapters will be relea
 - [x] Allow user to toggle notification
 - [x] New Chapter for MangaDEX comes with the reader URL
 - [x] New Chapter for Other sources comes with the reader URL
-- [ ] New Chapter for Comick sources comes with the reader URL
+
+## Problems faced
+
+- For Others sources, there are many varying factors in each domain on how they handle their chapter, hence each source will require a specific study
+- For Comick, while I am able to detect the latest chapter updates, I am unable to directly emit the URL linking to the latest chapter itself as the backend requires authentication
 
 ## Contribute
 
