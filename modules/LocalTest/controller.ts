@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { fetchComickDetails, fetchMangaDEXDetails } from "./service";
+import {
+  fetchComickDetails,
+  fetchMangaDEXDetails,
+  fetchOtherDetails,
+} from "./service";
 
 export const testMangaDex = async (
   req: Request,
@@ -32,6 +36,25 @@ export const testComick = async (
 
   try {
     await fetchComickDetails(url as string);
+    return res.status(200).json({ success: "Test ok" });
+  } catch (error: unknown) {
+    console.log(error);
+    return res.status(500).json({ error: "Test fail" });
+  }
+};
+
+export const testOthers = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { url, chapter } = req.query;
+
+  if (!url || !chapter) {
+    return res.status(400).json({ error: "URL is required" });
+  }
+
+  try {
+    await fetchOtherDetails(url as string, +chapter);
     return res.status(200).json({ success: "Test ok" });
   } catch (error: unknown) {
     console.log(error);
