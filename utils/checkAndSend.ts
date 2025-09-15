@@ -113,7 +113,7 @@ export const CheckAndUpdateAndSend = async (
   if (!!nextChapterDetails && user.is_on) {
     bot.telegram.sendMessage(
       user.telegramId,
-      `${nextChapterDetails.name} has just released a new chapter! ${nextChapterDetails.viewer}`,
+      `${nextChapterDetails.name} has just released a new chapter - ${nextChapterDetails.chapter} ! ${nextChapterDetails.viewer}`,
       {
         link_preview_options: {
           is_disabled: true,
