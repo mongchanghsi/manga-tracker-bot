@@ -16,6 +16,7 @@ export type Bookmark = {
 export enum SOURCE {
   MANGADEX = "MangaDEX",
   COMICK = "Comick.io",
+  MANHUAUS = "Manhuaus",
   OTHERS = "Others",
 }
 

@@ -70,14 +70,17 @@ export const AddBookmarksFollowup = async (
             { text: SOURCE.MANGADEX, callback_data: SOURCE.MANGADEX },
             { text: SOURCE.COMICK, callback_data: SOURCE.COMICK },
           ],
-          [{ text: SOURCE.OTHERS, callback_data: SOURCE.OTHERS }],
+          [
+            { text: SOURCE.MANHUAUS, callback_data: SOURCE.MANHUAUS },
+            { text: SOURCE.OTHERS, callback_data: SOURCE.OTHERS },
+          ],
         ],
       },
     });
     // source step is in the index.ts
   } else if (params.step === STEP.URL) {
     params.url = getMessage(ctx);
-    if (params.source === SOURCE.OTHERS) {
+    if ([SOURCE.OTHERS, SOURCE.MANHUAUS].includes(params.source as SOURCE)) {
       params.step = STEP.CHAPTER;
       await ctx.reply(BOOKMARK_ADD_ASK_CHAPTER);
     } else {
