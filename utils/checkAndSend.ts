@@ -7,6 +7,7 @@ import { Bookmark, SOURCE, User } from "./types";
 import { Update } from "telegraf/types";
 import listDb from "../database/List";
 import ManhuausSource from "./Source/Manhuaus";
+import ManhuaPlusSource from "./Source/ManhuaPlus";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const DELAY = 1_000;
@@ -48,6 +49,10 @@ export const CheckOnly = async (bookmark: Bookmark) => {
       switch (bookmark.source) {
         case SOURCE.MANHUAUS: {
           source = new ManhuausSource();
+          break;
+        }
+        case SOURCE.MANHUAPLUS: {
+          source = new ManhuaPlusSource();
           break;
         }
         default:

@@ -31,9 +31,9 @@ const getRules = (chapter: number): ValidationRule[] => [
   ),
 ];
 
-class ManhuausSource extends BaseSource {
+class ManhuaPlusSource extends BaseSource {
   isValidUrl(url: string) {
-    return url.includes("https://manhuaus.com/manga");
+    return url.includes("https://manhuaplus.org/manga");
   }
 
   async getLatestChapter(url: string, chapter: number) {
@@ -74,7 +74,7 @@ class ManhuausSource extends BaseSource {
           .map((rule) => rule.errorMessage),
       };
     } catch (error) {
-      console.log("ManhuausSource | getLatestChapter | Error - ", error);
+      console.log("ManhuaPlusSource | getLatestChapter | Error - ", error);
       return {
         chapter: 0,
         viewer: url,
@@ -87,4 +87,4 @@ class ManhuausSource extends BaseSource {
   }
 }
 
-export default ManhuausSource;
+export default ManhuaPlusSource;

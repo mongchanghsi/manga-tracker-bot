@@ -51,7 +51,9 @@ class ListDB {
       const { error } = await this.client.from(TABLE_NAME.LIST).insert({
         telegramId: userId,
         name,
-        url: [SOURCE.OTHERS, SOURCE.MANHUAUS].includes(source as SOURCE)
+        url: [SOURCE.OTHERS, SOURCE.MANHUAUS, SOURCE.MANHUAPLUS].includes(
+          source as SOURCE
+        )
           ? processedUrl
           : url,
         latestChapter: +latestChapter,

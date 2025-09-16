@@ -17,6 +17,7 @@ export enum SOURCE {
   MANGADEX = "MangaDEX",
   COMICK = "Comick.io",
   MANHUAUS = "Manhuaus",
+  MANHUAPLUS = "ManhuaPlus",
   OTHERS = "Others",
 }
 
