@@ -1,7 +1,9 @@
-import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer-extra";
 import BaseSource from "..";
 import { JSDOM, VirtualConsole } from "jsdom";
 import ENVIRONMENT from "../../../configuration/environment";
+import { PrepareRealisticHeaders } from "../../realisticFetch";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 const BROWSERLESS_WS = `wss://production-sfo.browserless.io?token=${ENVIRONMENT.BROWERLESS_TOKEN}`;
 
@@ -42,19 +44,23 @@ class ManhuausSource extends BaseSource {
 
     // Later consider whether the url is inclusive of the chapter-placeholder
     const rules = getRules(chapter);
+    const header = PrepareRealisticHeaders();
 
     try {
+      puppeteer.use(StealthPlugin());
       browser = await puppeteer.connect({
         browserWSEndpoint: BROWSERLESS_WS,
       });
       page = await browser.newPage();
 
-      await page.setUserAgent(
-        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
-      );
+      await page.setUserAgent(header["User-Agent"]);
+      const extraHeaders = { ...header };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (extraHeaders as any)["User-Agent"];
+      await page.setExtraHTTPHeaders(extraHeaders);
 
       await page.goto(url, {
-        waitUntil: "networkidle2",
+        waitUntil: "domcontentloaded",
         timeout: 15_000, // 15 seconds timeout
       });
 

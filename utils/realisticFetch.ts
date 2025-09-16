@@ -23,12 +23,14 @@ const userAgents = [
   },
 ];
 
+export const GetRandomUserAgent = () =>
+  userAgents[Math.floor(Math.random() * userAgents.length)];
+
 export const PrepareRealisticHeaders = () => {
-  const getRandomUserAgent = () =>
-    userAgents[Math.floor(Math.random() * userAgents.length)];
+  const randomAgent = GetRandomUserAgent();
 
   return {
-    "User-Agent": getRandomUserAgent().ua,
+    "User-Agent": randomAgent.ua,
     Accept:
       "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
     "Accept-Language": "en-US,en;q=0.9",
@@ -36,9 +38,9 @@ export const PrepareRealisticHeaders = () => {
     Connection: "keep-alive",
     "Upgrade-Insecure-Requests": "1",
     "Cache-Control": "max-age=0",
-    "Sec-CH-UA": getRandomUserAgent().secChUa,
+    "Sec-CH-UA": randomAgent.secChUa,
     "Sec-CH-UA-Mobile": "?0",
-    "Sec-CH-UA-Platform": getRandomUserAgent().platform,
+    "Sec-CH-UA-Platform": randomAgent.platform,
     "Sec-Fetch-Dest": "document",
     "Sec-Fetch-Mode": "navigate",
     "Sec-Fetch-Site": "same-origin",
