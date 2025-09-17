@@ -47,13 +47,16 @@ class ListDB {
     source: string
   ) {
     try {
-      const processedUrl = url.replace(latestChapter, CHAPTER_PLACEHOLDER);
+      const processedUrl = url.replaceAll(latestChapter, CHAPTER_PLACEHOLDER);
       const { error } = await this.client.from(TABLE_NAME.LIST).insert({
         telegramId: userId,
         name,
-        url: [SOURCE.OTHERS, SOURCE.MANHUAUS, SOURCE.MANHUAPLUS].includes(
-          source as SOURCE
-        )
+        url: [
+          SOURCE.OTHERS,
+          SOURCE.MANHUAUS,
+          SOURCE.MANHUAPLUS,
+          SOURCE.WEBTOONS,
+        ].includes(source as SOURCE)
           ? processedUrl
           : url,
         latestChapter: +latestChapter,
@@ -80,7 +83,7 @@ class ListDB {
         return data.map((_data) => {
           return {
             ..._data,
-            url: _data.url.replace(CHAPTER_PLACEHOLDER, _data.latestChapter),
+            url: _data.url.replaceAll(CHAPTER_PLACEHOLDER, _data.latestChapter),
           };
         });
       }
@@ -105,7 +108,7 @@ class ListDB {
         return data.map((_data) => {
           return {
             ..._data,
-            url: _data.url.replace(CHAPTER_PLACEHOLDER, _data.latestChapter),
+            url: _data.url.replaceAll(CHAPTER_PLACEHOLDER, _data.latestChapter),
           };
         });
       }

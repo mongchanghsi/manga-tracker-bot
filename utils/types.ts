@@ -18,6 +18,7 @@ export enum SOURCE {
   COMICK = "Comick.io",
   MANHUAUS = "Manhuaus",
   MANHUAPLUS = "ManhuaPlus",
+  WEBTOONS = "Webtoons",
   OTHERS = "Others",
 }
 

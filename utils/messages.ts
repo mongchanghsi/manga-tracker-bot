@@ -14,6 +14,8 @@ export const BOOKMARK_ADD_MANHUAUS =
   "What is the Manhuaus URL with the latest chapter (e.g. https://manhuaus.com/manga/solo-leveling-ragnarok/chapter-48/)";
 export const BOOKMARK_ADD_MANHUAPLUS =
   "What is the ManhuaPlus URL with the latest chapter (e.g. https://manhuaplus.org/manga/the-fox-eyed-villain-of-the-demon-academy/chapter-35)";
+export const BOOKMARK_ADD_WEBTOONS =
+  "What is the Webtoons URL with the latest chapter (e.g. https://www.webtoons.com/en/fantasy/the-new-hire-is-the-demon-lord/episode-60/viewer?title_no=6692&episode_no=60) Try to ensure that there are no duplicating characters apart from the chapter number";
 export const BOOKMARK_ADD_ASK_URL_NO_CHAPTER = "What is the URL";
 export const BOOKMARK_ADD_ASK_URL_WITH_CHAPTER =
   "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number. Recommended mangakakalot)";

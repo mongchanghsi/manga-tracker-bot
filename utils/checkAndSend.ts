@@ -8,6 +8,7 @@ import { Update } from "telegraf/types";
 import listDb from "../database/List";
 import ManhuausSource from "./Source/Manhuaus";
 import ManhuaPlusSource from "./Source/ManhuaPlus";
+import WebtoonsSource from "./Source/Webtoons";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const DELAY = 1_000;
@@ -27,7 +28,7 @@ export const CheckOnly = async (bookmark: Bookmark) => {
     "Checking - ",
     bookmark.name,
     " | ",
-    bookmark.url.replace(
+    bookmark.url.replaceAll(
       bookmark.latestChapter.toString(),
       (bookmark.latestChapter + 1).toString()
     )
@@ -55,6 +56,10 @@ export const CheckOnly = async (bookmark: Bookmark) => {
           source = new ManhuaPlusSource();
           break;
         }
+        case SOURCE.WEBTOONS: {
+          source = new WebtoonsSource();
+          break;
+        }
         default:
           source = new OthersSource();
       }
@@ -69,7 +74,7 @@ export const CheckOnly = async (bookmark: Bookmark) => {
       }
 
       nextChapterDetails = await source.getLatestChapter(
-        bookmark.url.replace(
+        bookmark.url.replaceAll(
           bookmark.latestChapter.toString(),
           (bookmark.latestChapter + 1).toString()
         ),

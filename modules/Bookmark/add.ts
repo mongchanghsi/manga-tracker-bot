@@ -68,7 +68,7 @@ export const AddBookmarksFollowup = async (
         inline_keyboard: [
           [
             { text: SOURCE.MANGADEX, callback_data: SOURCE.MANGADEX },
-            { text: SOURCE.COMICK, callback_data: SOURCE.COMICK },
+            { text: SOURCE.WEBTOONS, callback_data: SOURCE.WEBTOONS },
           ],
           [
             { text: SOURCE.MANHUAUS, callback_data: SOURCE.MANHUAUS },
@@ -82,9 +82,12 @@ export const AddBookmarksFollowup = async (
   } else if (params.step === STEP.URL) {
     params.url = getMessage(ctx);
     if (
-      [SOURCE.OTHERS, SOURCE.MANHUAUS, SOURCE.MANHUAPLUS].includes(
-        params.source as SOURCE
-      )
+      [
+        SOURCE.OTHERS,
+        SOURCE.MANHUAUS,
+        SOURCE.MANHUAPLUS,
+        SOURCE.WEBTOONS,
+      ].includes(params.source as SOURCE)
     ) {
       params.step = STEP.CHAPTER;
       await ctx.reply(BOOKMARK_ADD_ASK_CHAPTER);
