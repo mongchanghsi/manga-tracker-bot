@@ -55,6 +55,7 @@ class ListDB {
           SOURCE.OTHERS,
           SOURCE.MANHUAUS,
           SOURCE.MANHUAPLUS,
+          SOURCE.HARIMANGA,
           SOURCE.WEBTOONS,
         ].includes(source as SOURCE)
           ? processedUrl

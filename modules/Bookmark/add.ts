@@ -74,7 +74,10 @@ export const AddBookmarksFollowup = async (
             { text: SOURCE.MANHUAUS, callback_data: SOURCE.MANHUAUS },
             { text: SOURCE.MANHUAPLUS, callback_data: SOURCE.MANHUAPLUS },
           ],
-          [{ text: SOURCE.OTHERS, callback_data: SOURCE.OTHERS }],
+          [
+            { text: SOURCE.HARIMANGA, callback_data: SOURCE.HARIMANGA },
+            { text: SOURCE.OTHERS, callback_data: SOURCE.OTHERS },
+          ],
         ],
       },
     });
@@ -86,6 +89,7 @@ export const AddBookmarksFollowup = async (
         SOURCE.OTHERS,
         SOURCE.MANHUAUS,
         SOURCE.MANHUAPLUS,
+        SOURCE.HARIMANGA,
         SOURCE.WEBTOONS,
       ].includes(params.source as SOURCE)
     ) {

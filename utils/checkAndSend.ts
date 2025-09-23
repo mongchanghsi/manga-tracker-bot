@@ -9,6 +9,7 @@ import listDb from "../database/List";
 import ManhuausSource from "./Source/Manhuaus";
 import ManhuaPlusSource from "./Source/ManhuaPlus";
 import WebtoonsSource from "./Source/Webtoons";
+import HarimangaSource from "./Source/Harimanga";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const DELAY = 1_000;
@@ -54,6 +55,10 @@ export const CheckOnly = async (bookmark: Bookmark) => {
         }
         case SOURCE.MANHUAPLUS: {
           source = new ManhuaPlusSource();
+          break;
+        }
+        case SOURCE.HARIMANGA: {
+          source = new HarimangaSource();
           break;
         }
         case SOURCE.WEBTOONS: {
