@@ -9,7 +9,7 @@ import { BookmarkSessionContext } from "../Bookmark/session";
 import { CronJob } from "cron";
 import { CheckMultiAndUpdateAndSend } from "../../utils/checkAndSend";
 
-const SCHEDULED_TIME = "00 00 */6 * * *"; // Every 6 hours;
+const SCHEDULED_TIME = "00 00 */8 * * *"; // Every 8 hours;
 // const SCHEDULED_TIME = "00 00 */24 * * *"; // Every 24 hours
 
 const getCurrentTime = (): string => {
@@ -41,12 +41,12 @@ const ScheduleUpdateBookmarks = async (
 
     const now = new Date();
     const hours = now.getUTCHours(); // assuming UTC-based cron job
-    const intervalIndex = Math.floor(hours / 6);
+    const intervalIndex = Math.floor(hours / 8);
 
     for (const _user of users) {
       const bookmarks = await listDb.getAllBookmarks(_user.telegramId);
       const filteredBookmarks = bookmarks.filter(
-        (bookmark) => bookmark.id % 4 === intervalIndex
+        (bookmark) => bookmark.id % 3 === intervalIndex
       );
       await CheckMultiAndUpdateAndSend(bot, _user, filteredBookmarks);
 
