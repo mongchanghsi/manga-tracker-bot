@@ -3,10 +3,27 @@ export const NOT_REGISTERED =
 
 export const BOOKMARK_NONE =
   "You don't have any bookmarked manga! Add one to get started";
-export const BOOKMARK_ADD_RESPONSE_1 = "What is the name?";
-export const BOOKMARK_ADD_RESPONSE_2 =
-  "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number. Recommended mangafire/kingofshojo/manhuaus)";
-export const BOOKMARK_ADD_RESPONSE_3 = "What is latest chapter for this URL";
+export const BOOKMARK_ADD_ASK_NAME = "What is the name?";
+export const BOOKMARK_ADD_ASK_SOURCE =
+  "What is the source? MangaDEX/Comick/Others";
+export const BOOKMARK_ADD_MANGADEX =
+  "What is the MangaDEX URL (e.g. https://mangadex.org/title/a1c7c817-4e59-43b7-9365-09675a149a6f/one-piece)";
+export const BOOKMARK_ADD_XBATO =
+  "What is the xBato URL (e.g. https://xbato.com/title/126724-the-banished-court-magician-aims-to-become-the-strongest-official)";
+export const BOOKMARK_ADD_COMICK =
+  "What is the Comick URL (e.g. https://comick.io/comic/02-one-piece)";
+export const BOOKMARK_ADD_MANHUAUS =
+  "What is the Manhuaus URL with the latest chapter (e.g. https://manhuaus.com/manga/solo-leveling-ragnarok/chapter-48/)";
+export const BOOKMARK_ADD_MANHUAPLUS =
+  "What is the ManhuaPlus URL with the latest chapter (e.g. https://manhuaplus.org/manga/the-fox-eyed-villain-of-the-demon-academy/chapter-35)";
+export const BOOKMARK_ADD_HARIMANGA =
+  "What is the Harimanga URL with the latest chapter (e.g. https://harimanga.me/manga/solo-max-level-newbie/chapter-222/)";
+export const BOOKMARK_ADD_WEBTOONS =
+  "What is the Webtoons URL with the latest chapter (e.g. https://www.webtoons.com/en/fantasy/the-new-hire-is-the-demon-lord/episode-60/viewer?title_no=6692&episode_no=60) Try to ensure that there are no duplicating characters apart from the chapter number";
+export const BOOKMARK_ADD_ASK_URL_NO_CHAPTER = "What is the URL";
+export const BOOKMARK_ADD_ASK_URL_WITH_CHAPTER =
+  "What is the URL of the latest chapter (Please make sure the URL contains the latest chapter number. Recommended mangakakalot)";
+export const BOOKMARK_ADD_ASK_CHAPTER = "What is latest chapter for this URL";
 export const BOOKMARK_ADD_SUCCESS = "Added to your bookmarks!";
 
 export const BOOKMARK_REMOVE_RESPONSE_1 =

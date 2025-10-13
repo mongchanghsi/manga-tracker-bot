@@ -8,6 +8,18 @@
 
 As a manga reader, I often struggle with knowing when new chapters will be released. Sometimes I read manga that aren't listed on platforms like MangaDEX, or those that are listed on MangaDEX lack English translations. As a result, I rely on individual sites for specific manga, causing the list of URLs to grow over time, and I often lose track of them. This bot aims to consistently monitor the registered URLs for new releases by making GET requests and notifying users when a new chapter is available, using a daily cron job to check for updates.
 
+## Features
+
+- [x] Allow tracking for MangaDEX, Comick and other sources
+- [x] Allow user to toggle notification
+- [x] New Chapter for MangaDEX comes with the reader URL
+- [x] New Chapter for Other sources comes with the reader URL
+
+## Problems faced
+
+- For Others sources, there are many varying factors in each domain on how they handle their chapter, hence each source will require a specific study
+- For Comick, while I am able to detect the latest chapter updates, I am unable to directly emit the URL linking to the latest chapter itself as the backend requires authentication
+
 ## Contribute
 
 As individual sites handles new chapters separately, you may contribute through updating the [checker](https://github.com/mongchanghsi/manga-tracker-bot/blob/master/utils/checker.ts) used and do a pull request for it.

@@ -1,7 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { TABLE_NAME } from "./table_name";
 import getSupabaseClient from "./client";
-import { Bookmark } from "../utils/types";
+import { Bookmark, SOURCE } from "../utils/types";
 import { generateTimestamp } from "../utils/date";
 
 const CHAPTER_PLACEHOLDER = `{chapter-placeholder}`;
@@ -43,15 +43,25 @@ class ListDB {
     userId: number,
     name: string,
     url: string,
-    latestChapter: string
+    latestChapter: string,
+    source: string
   ) {
     try {
-      const processedUrl = url.replace(latestChapter, CHAPTER_PLACEHOLDER);
+      const processedUrl = url.replaceAll(latestChapter, CHAPTER_PLACEHOLDER);
       const { error } = await this.client.from(TABLE_NAME.LIST).insert({
         telegramId: userId,
         name,
-        url: processedUrl,
+        url: [
+          SOURCE.OTHERS,
+          SOURCE.MANHUAUS,
+          SOURCE.MANHUAPLUS,
+          SOURCE.HARIMANGA,
+          SOURCE.WEBTOONS,
+        ].includes(source as SOURCE)
+          ? processedUrl
+          : url,
         latestChapter: +latestChapter,
+        source,
       });
       if (!error) return true;
       return false;
@@ -74,7 +84,7 @@ class ListDB {
         return data.map((_data) => {
           return {
             ..._data,
-            url: _data.url.replace(CHAPTER_PLACEHOLDER, _data.latestChapter),
+            url: _data.url.replaceAll(CHAPTER_PLACEHOLDER, _data.latestChapter),
           };
         });
       }
@@ -99,7 +109,7 @@ class ListDB {
         return data.map((_data) => {
           return {
             ..._data,
-            url: _data.url.replace(CHAPTER_PLACEHOLDER, _data.latestChapter),
+            url: _data.url.replaceAll(CHAPTER_PLACEHOLDER, _data.latestChapter),
           };
         });
       }

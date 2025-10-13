@@ -1,6 +1,7 @@
 import { Context } from "telegraf";
 import { Update } from "telegraf/types";
 import { COMMANDS } from "../../utils/command";
+// import { Update } from 'telegraf/typings/core/types/typegram';
 
 export interface BookmarkSessionContext<U extends Update = Update>
   extends Context<U> {
@@ -15,10 +16,12 @@ export type ADD_SESSION = {
   name: string;
   url: string;
   latestChapter: string;
+  source: string;
 };
 
 export enum STEP {
   NAME = "name",
+  SOURCE = "source",
   URL = "url",
   CHAPTER = "chapter",
 }
@@ -28,4 +31,5 @@ export const DEFAULT_ADD_SESSION = {
   name: "",
   url: "",
   latestChapter: "",
+  source: "",
 };

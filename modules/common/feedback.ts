@@ -21,6 +21,7 @@ export const FeedbackCommand = async (
   const user = await userDb.getUser(userId);
   if (!user) {
     await ctx.reply(NOT_REGISTERED);
+    return;
   }
 
   ctx.session.command = COMMANDS.FEEDBACK;

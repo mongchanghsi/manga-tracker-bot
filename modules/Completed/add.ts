@@ -4,7 +4,7 @@ import { getMessage, getUserId } from "../../utils/telegramHelper";
 import userDb from "../../database/User";
 import { COMMANDS } from "../../utils/command";
 import {
-  BOOKMARK_ADD_RESPONSE_1,
+  BOOKMARK_ADD_ASK_NAME,
   COMPLETED_ADD_SUCCESS,
   NOT_REGISTERED,
 } from "../../utils/messages";
@@ -23,7 +23,7 @@ export const AddCompletedCommand = async (
   }
 
   ctx.session.command = COMMANDS.ADD_COMPLETED;
-  await ctx.reply(BOOKMARK_ADD_RESPONSE_1);
+  await ctx.reply(BOOKMARK_ADD_ASK_NAME);
 };
 
 export const AddCompletedFollowup = async (
