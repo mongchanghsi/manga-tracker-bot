@@ -8,6 +8,8 @@ export const BOOKMARK_ADD_ASK_SOURCE =
   "What is the source? MangaDEX/Comick/Others";
 export const BOOKMARK_ADD_MANGADEX =
   "What is the MangaDEX URL (e.g. https://mangadex.org/title/a1c7c817-4e59-43b7-9365-09675a149a6f/one-piece)";
+export const BOOKMARK_ADD_XBATO =
+  "What is the xBato URL (e.g. https://xbato.com/title/126724-the-banished-court-magician-aims-to-become-the-strongest-official)";
 export const BOOKMARK_ADD_COMICK =
   "What is the Comick URL (e.g. https://comick.io/comic/02-one-piece)";
 export const BOOKMARK_ADD_MANHUAUS =

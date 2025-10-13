@@ -47,6 +47,7 @@ import {
   BOOKMARK_ADD_MANHUAPLUS,
   BOOKMARK_ADD_MANHUAUS,
   BOOKMARK_ADD_WEBTOONS,
+  BOOKMARK_ADD_XBATO,
 } from "./utils/messages";
 import { ToggleNotificationCommand } from "./modules/common/notification";
 
@@ -138,6 +139,8 @@ bot.on("callback_query", async (ctx: any) => {
       response = BOOKMARK_ADD_HARIMANGA;
     } else if (data === SOURCE.WEBTOONS) {
       response = BOOKMARK_ADD_WEBTOONS;
+    } else if (data === SOURCE.XBATO) {
+      response = BOOKMARK_ADD_XBATO;
     } else {
       response = BOOKMARK_ADD_ASK_URL_WITH_CHAPTER;
     }

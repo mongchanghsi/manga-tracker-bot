@@ -10,6 +10,7 @@ import ManhuausSource from "./Source/Manhuaus";
 import ManhuaPlusSource from "./Source/ManhuaPlus";
 import WebtoonsSource from "./Source/Webtoons";
 import HarimangaSource from "./Source/Harimanga";
+import xBatoSource from "./Source/xBato";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const DELAY = 1_000;
@@ -43,6 +44,11 @@ export const CheckOnly = async (bookmark: Bookmark) => {
     }
     case SOURCE.COMICK: {
       const source = new ComickSource();
+      nextChapterDetails = await source.getLatestChapter(bookmark.url);
+      break;
+    }
+    case SOURCE.XBATO: {
+      const source = new xBatoSource();
       nextChapterDetails = await source.getLatestChapter(bookmark.url);
       break;
     }
