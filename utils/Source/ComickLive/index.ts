@@ -1,30 +1,36 @@
-import puppeteer from "puppeteer-core";
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import BaseSource from "..";
 import { JSDOM, VirtualConsole } from "jsdom";
-import { ComickPropsResponse } from "./types";
 import ENVIRONMENT from "../../../configuration/environment";
+import { PrepareRealisticHeaders } from "../../realisticFetch";
+import { ComickLiveDataResponse } from "./types";
 
 const BROWSERLESS_WS = `wss://production-sfo.browserless.io?token=${ENVIRONMENT.BROWERLESS_TOKEN}`;
 
-// comick.io has been deprecated, there is a new version of comick.live but different search parameter
-class ComickSource extends BaseSource {
+class ComickLiveSource extends BaseSource {
   isValidUrl(url: string) {
-    return url.includes("https://comick.io/comic");
+    return url.includes("https://comick.live/comic");
   }
 
   async getLatestChapter(url: string) {
     let browser;
     let page;
 
+    const header = PrepareRealisticHeaders();
+
     try {
+      puppeteer.use(StealthPlugin());
       browser = await puppeteer.connect({
         browserWSEndpoint: BROWSERLESS_WS,
       });
       page = await browser.newPage();
 
-      await page.setUserAgent(
-        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
-      );
+      await page.setUserAgent(header["User-Agent"]);
+      const extraHeaders = { ...header };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (extraHeaders as any)["User-Agent"];
+      await page.setExtraHTTPHeaders(extraHeaders);
 
       await page.goto(url, {
         waitUntil: "networkidle2",
@@ -39,24 +45,24 @@ class ComickSource extends BaseSource {
       const dom = new JSDOM(content, { virtualConsole });
       const document = dom.window.document;
 
-      const scriptTag = document.getElementById("__NEXT_DATA__");
+      const scriptTag = document.getElementById("comic-data");
 
       if (scriptTag) {
         const jsonString = scriptTag.textContent;
         try {
-          const jsonData: ComickPropsResponse = JSON.parse(jsonString || "");
+          const jsonData: ComickLiveDataResponse = JSON.parse(jsonString || "");
           // TODO: Figure out how to get the URL
           return {
-            chapter: +jsonData.props.pageProps.comic.last_chapter,
+            chapter: +jsonData.last_chapter,
             viewer: url,
             errors: [],
           };
         } catch (error) {
-          console.log("ComickSource | getLatestChapter | Error - ", error);
+          console.log("ComickLiveSource | getLatestChapter | Error - ", error);
         }
       } else {
         console.log(
-          "ComickSource | getLatestChapter | Error - Script tag with id '__NEXT_DATA__' not found."
+          "ComickLiveSource | getLatestChapter | Error - Script tag with id 'comic-data' not found."
         );
       }
 
@@ -66,7 +72,7 @@ class ComickSource extends BaseSource {
         errors: [],
       };
     } catch (error) {
-      console.log("ComickSource | getLatestChapter | Error - ", error);
+      console.log("ComickLiveSource | getLatestChapter | Error - ", error);
       return {
         chapter: 0,
         viewer: "",
@@ -79,4 +85,4 @@ class ComickSource extends BaseSource {
   }
 }
 
-export default ComickSource;
+export default ComickLiveSource;

@@ -78,7 +78,10 @@ export const AddBookmarksFollowup = async (
             { text: SOURCE.HARIMANGA, callback_data: SOURCE.HARIMANGA },
             { text: SOURCE.XBATO, callback_data: SOURCE.XBATO },
           ],
-          [{ text: SOURCE.OTHERS, callback_data: SOURCE.OTHERS }],
+          [
+            { text: SOURCE.COMICK_LIVE, callback_data: SOURCE.COMICK_LIVE },
+            { text: SOURCE.OTHERS, callback_data: SOURCE.OTHERS },
+          ],
         ],
       },
     });

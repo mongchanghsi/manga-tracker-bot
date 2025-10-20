@@ -12,6 +12,8 @@ export const BOOKMARK_ADD_XBATO =
   "What is the xBato URL (e.g. https://xbato.com/title/126724-the-banished-court-magician-aims-to-become-the-strongest-official)";
 export const BOOKMARK_ADD_COMICK =
   "What is the Comick URL (e.g. https://comick.io/comic/02-one-piece)";
+export const BOOKMARK_ADD_COMICK_LIVE =
+  "What is the Comick URL (e.g. https://comick.live/comic/one-piece)";
 export const BOOKMARK_ADD_MANHUAUS =
   "What is the Manhuaus URL with the latest chapter (e.g. https://manhuaus.com/manga/solo-leveling-ragnarok/chapter-48/)";
 export const BOOKMARK_ADD_MANHUAPLUS =
