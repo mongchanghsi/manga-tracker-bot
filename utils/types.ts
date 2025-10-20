@@ -21,6 +21,7 @@ export enum SOURCE {
   HARIMANGA = "Harimanga",
   WEBTOONS = "Webtoons",
   XBATO = "xBato",
+  COMICK_LIVE = "Comick.live",
   OTHERS = "Others",
 }
 

@@ -42,6 +42,7 @@ import { SOURCE } from "./utils/types";
 import {
   BOOKMARK_ADD_ASK_URL_WITH_CHAPTER,
   BOOKMARK_ADD_COMICK,
+  BOOKMARK_ADD_COMICK_LIVE,
   BOOKMARK_ADD_HARIMANGA,
   BOOKMARK_ADD_MANGADEX,
   BOOKMARK_ADD_MANHUAPLUS,
@@ -141,6 +142,8 @@ bot.on("callback_query", async (ctx: any) => {
       response = BOOKMARK_ADD_WEBTOONS;
     } else if (data === SOURCE.XBATO) {
       response = BOOKMARK_ADD_XBATO;
+    } else if (data === SOURCE.COMICK_LIVE) {
+      response = BOOKMARK_ADD_COMICK_LIVE;
     } else {
       response = BOOKMARK_ADD_ASK_URL_WITH_CHAPTER;
     }

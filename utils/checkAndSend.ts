@@ -11,6 +11,7 @@ import ManhuaPlusSource from "./Source/ManhuaPlus";
 import WebtoonsSource from "./Source/Webtoons";
 import HarimangaSource from "./Source/Harimanga";
 import xBatoSource from "./Source/xBato";
+import ComickLiveSource from "./Source/ComickLive";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const DELAY = 1_000;
@@ -49,6 +50,11 @@ export const CheckOnly = async (bookmark: Bookmark) => {
     }
     case SOURCE.XBATO: {
       const source = new xBatoSource();
+      nextChapterDetails = await source.getLatestChapter(bookmark.url);
+      break;
+    }
+    case SOURCE.COMICK_LIVE: {
+      const source = new ComickLiveSource();
       nextChapterDetails = await source.getLatestChapter(bookmark.url);
       break;
     }
