@@ -147,15 +147,19 @@ export const CheckAndUpdateAndSend = async (
 ) => {
   const nextChapterDetails = await CheckAndUpdate(bookmark);
   if (!!nextChapterDetails && user.is_on) {
-    bot.telegram.sendMessage(
-      user.telegramId,
-      `${nextChapterDetails.name} has just released a new chapter - ${nextChapterDetails.chapter}! ${nextChapterDetails.viewer}`,
-      {
-        link_preview_options: {
-          is_disabled: true,
-        },
-      }
-    );
+    try {
+      await bot.telegram.sendMessage(
+        user.telegramId,
+        `${nextChapterDetails.name} has just released a new chapter - ${nextChapterDetails.chapter}! ${nextChapterDetails.viewer}`,
+        {
+          link_preview_options: {
+            is_disabled: true,
+          },
+        }
+      );
+    } catch (error) {
+      console.log("Sending failed", error);
+    }
   }
 };
 

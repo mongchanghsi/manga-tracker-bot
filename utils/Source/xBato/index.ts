@@ -48,11 +48,8 @@ class xBatoSource extends BaseSource {
         };
 
       const data: HanifuResponse = await response.json();
-      console.log("Data", data);
       const chapters = data.data.chapters;
       const latestChapterInfo = chapters[chapters.length - 1];
-      console.log(latestChapterInfo);
-      console.log(this.removeVolumeInfo(latestChapterInfo.chapter));
       const latestChapter = this.removeVolumeInfo(
         latestChapterInfo.chapter
       ).split(" ")[1];
